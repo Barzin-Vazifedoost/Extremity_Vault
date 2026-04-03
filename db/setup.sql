@@ -1,11 +1,30 @@
-Create table if not exists user_id(
+Create table if not exists users(
     id int primary key auto_increment,
     name varchar(255) not null,
-    email varchar(255) not null unique
+    email varchar(255) not null unique,
+    password varchar(255) not null,
+    role enum('admin', 'user') not null default 'user',
+    created_at timestamp default current_timestamp,
+
 );
 
-create table if not exists user_profile(
-    references user_id
-    email varchar(255) not null unique
-    
-)
+
+create table if not exists categories(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+
+    name VARCHAR(255) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table if not exists articles(
+    id int primary key auto_increment,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id int not null,
+    category_id int,
+    title varchar(255) not null,
+    content text not null,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+
+);
