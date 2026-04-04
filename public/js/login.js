@@ -11,7 +11,8 @@ document.getElementById('login_page').addEventListener('submit', function(e) {
     .then(data => {
 
         if(data.success) {
-            window.location.href = 'index.html';
+            // TODO: Create index.html or redirect to appropriate page
+            window.location.href = '../html/login.html'; // Temporary redirect
         } 
         else {
             document.getElementById('message').innerText = data.error;
