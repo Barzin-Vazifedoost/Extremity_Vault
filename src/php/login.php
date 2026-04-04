@@ -14,5 +14,30 @@ if (!$validEmail) {
     exit();
 }
 
+try {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+    if($user){
+       if(password_verify($password,$user['password'])){
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['name'] = $user['name'];
+        echo json_encode(['success' => true, 'message' => 'User Logged In']);
+
+
+       }
+       else{
+        echo json_encode(['success' => false, 'error' => 'Wrong password']); exit();
+       }
+    }
+    else{
+        echo json_encode(['success' => false, 'error' => 'User not found']); exit();
+    }
+    
+}
+catch (PDOException $e) {
+        echo json_encode(['success' => false, 'error' => 'Login Failed']);
+        exit();
+}
 
 ?>
