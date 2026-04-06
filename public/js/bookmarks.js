@@ -37,12 +37,22 @@ function loadBookmarks() {
             const div = document.createElement('div');
             div.className = 'article';
             div.dataset.articleId = article.id;
-            div.innerHTML = `
-                <h2>${article.title}</h2>
-                <small>${date}</small>
-                <p>${article.content}</p>
-                <button class="remove-bookmark" data-id="${article.id}">Remove Bookmark</button>
-            `;
+            
+            const titleEl = document.createElement('h2');
+            titleEl.textContent = article.title;
+            const dateEl = document.createElement('small');
+            dateEl.textContent = date;
+            const contentEl = document.createElement('p');
+            contentEl.textContent = article.content;
+            const buttonEl = document.createElement('button');
+            buttonEl.className = 'remove-bookmark';
+            buttonEl.dataset.id = article.id;
+            buttonEl.textContent = 'Remove Bookmark';
+            
+            div.appendChild(titleEl);
+            div.appendChild(dateEl);
+            div.appendChild(contentEl);
+            div.appendChild(buttonEl);
             container.appendChild(div);
         });
 

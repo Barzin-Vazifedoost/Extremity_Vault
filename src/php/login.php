@@ -2,19 +2,8 @@
 session_start();
 header('Content-Type: application/json');
 
-// ========== DEBUGGING - DELETE AFTER FIXING ==========
-error_log('[LOGIN DEBUG] Login request received at ' . date('Y-m-d H:i:s'));
-error_log('[LOGIN DEBUG] Request method: ' . $_SERVER['REQUEST_METHOD']);
-error_log('[LOGIN DEBUG] Content type: ' . ($_SERVER['CONTENT_TYPE'] ?? 'not set'));
-// ========== END DEBUGGING ==========
-
 require_once 'db.php';
 $data = json_decode(file_get_contents('php://input'), true);
-
-// ========== DEBUGGING - DELETE AFTER FIXING ==========
-error_log('[LOGIN DEBUG] Raw input: ' . file_get_contents('php://input'));
-error_log('[LOGIN DEBUG] Decoded data: ' . print_r($data, true));
-// ========== END DEBUGGING ==========
 
 $email = $data['email'];
 $password = $data['password'];

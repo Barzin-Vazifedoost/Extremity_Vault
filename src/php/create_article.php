@@ -12,7 +12,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $title = filter_var($data['title'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
 $category_id = filter_var($data['category_id'] ?? 0, FILTER_VALIDATE_INT);
-$content = $data['content'] ?? '';
+$content = filter_var($data['content'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $user_id = $_SESSION['user_id'];
 
 if (!$title || !$category_id || !$content) {

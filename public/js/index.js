@@ -50,10 +50,15 @@ function loadArticles() {
             const date = new Date(article.created_at).toLocaleDateString();
             const div = document.createElement('div');
             div.className = 'article';
+            // Create elements safely to prevent XSS
+            const titleEl = document.createElement('h2');
+            titleEl.textContent = article.title;
+            const dateEl = document.createElement('small');
+            dateEl.textContent = `${article.category || 'Uncategorized'} — ${date}`;
+            const contentEl = document.createElement('p');
+            contentEl.textContent = article.content;
+            
             div.innerHTML = `
-                <h2>${article.title}</h2>
-                <small>${article.category || 'Uncategorized'} — ${date}</small>
-                <p>${article.content}</p>
                 <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
                 <div class="comments-section">
                     <h3>Comments</h3>
@@ -65,6 +70,12 @@ function loadArticles() {
                     </form>
                 </div>
             `;
+            
+            // Insert safe elements
+            div.insertBefore(contentEl, div.firstChild);
+            div.insertBefore(dateEl, div.firstChild); 
+            div.insertBefore(titleEl, div.firstChild);
+            
             container.appendChild(div);
             loadComments(article.id);
         });
@@ -103,7 +114,12 @@ function loadArticles() {
                         const list = document.getElementById(`comments-list-${articleId}`);
                         const comment = document.createElement('div');
                         comment.className = 'comment';
-                        comment.innerHTML = `<strong>${data.name}</strong><p>${input.value.trim()}</p>`;
+                        const nameEl = document.createElement('strong');
+                        nameEl.textContent = data.name;
+                        const contentEl = document.createElement('p');
+                        contentEl.textContent = input.value.trim();
+                        comment.appendChild(nameEl);
+                        comment.appendChild(contentEl);
                         list.appendChild(comment);
                         input.value = '';
                     } else {
@@ -124,7 +140,12 @@ function loadComments(articleId) {
         data.comments.forEach(comment => {
             const div = document.createElement('div');
             div.className = 'comment';
-            div.innerHTML = `<strong>${comment.name}</strong><p>${comment.content}</p>`;
+            const nameEl = document.createElement('strong');
+            nameEl.textContent = comment.name;
+            const contentEl = document.createElement('p');
+            contentEl.textContent = comment.content;
+            div.appendChild(nameEl);
+            div.appendChild(contentEl);
             list.appendChild(div);
         });
     });

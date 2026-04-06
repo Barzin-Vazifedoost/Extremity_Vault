@@ -10,8 +10,8 @@ $params = [];
 
 if ($query) {
     $sql .= " AND (a.title LIKE ? OR a.content LIKE ?)";
-    $params[] = "%$query%";
-    $params[] = "%$query%";
+    $params[] = "%" . $query . "%";
+    $params[] = "%" . $query . "%";
 }
 
 if ($category_id) {
