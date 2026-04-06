@@ -50,7 +50,7 @@ document.getElementById('login_page').addEventListener('submit', function(e) {
             debugLog('✅ Login successful, redirecting...', 'info');
             // ========== END DEBUGGING ==========
             // TODO: Create index.html or redirect to appropriate page
-            window.location.href = '../html/admin.html'; // Temporary redirect
+            window.location.href = '../html/index.html';
         } 
         else {
             // ========== DEBUGGING - DELETE AFTER FIXING ==========

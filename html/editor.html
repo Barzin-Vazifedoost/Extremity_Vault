@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor - Extremity Vault</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+    <!-- ========== DEBUG SCRIPT - DELETE AFTER FIXING ========== -->
+    <script src="../public/js/debug.js" defer></script>
+    <!-- ========== END DEBUG SCRIPT ========== -->
+    <script src="../public/js/editor.js" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+        <span class="nav-brand">Extremity Vault</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#" id="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Create Article</h1>
+        <form id="article_form" class="editor-form">
+            <div class="editor-fields">
+                <input type="text" id="title" name="title" placeholder="Article Title" required>
+
+                <select id="category_id" name="category_id" required>
+                    <option value="">Select Category</option>
+                    <option value="1">Characters</option>
+                    <option value="2">Settings</option>
+                    <option value="3">Items</option>
+                </select>
+
+                <textarea id="content" name="content" placeholder="Write your article here..." required></textarea>
+
+                <input type="submit" value="Publish Article">
+                <div id="message"></div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

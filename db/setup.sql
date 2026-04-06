@@ -50,3 +50,23 @@ create table if not exists bookmarks(
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
 
+-- =====================
+-- SEED DATA
+-- =====================
+
+-- Categories
+INSERT IGNORE INTO categories (id, name) VALUES
+(1, 'Characters'),
+(2, 'Settings'),
+(3, 'Items');
+
+-- Admin user (password: admin123)
+INSERT IGNORE INTO users (id, name, email, password, role) VALUES
+(1, 'Admin', 'admin@extremityvault.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+
+-- Sample published articles
+INSERT IGNORE INTO articles (id, user_id, category_id, title, content, status) VALUES
+(1, 1, 1, 'The Warden of the Frost Gate', 'An ancient guardian bound by oath to the northern pass, the Warden has stood vigil for three centuries. Neither fully alive nor truly dead, it judges all who seek entry into the frozen realm beyond.', 'published'),
+(2, 1, 2, 'The Shattered Expanse', 'A vast broken plateau where gravity behaves unpredictably. Chunks of earth float at impossible angles, connected by rope bridges that sway in winds that carry whispered secrets from civilizations long gone.', 'published'),
+(3, 1, 3, 'The Ember Vial', 'A small glass vial containing a flame that never dies. It provides warmth in the coldest environments and light in magical darkness, but grows dimmer each time it is used to harm another living creature.', 'published');
+
