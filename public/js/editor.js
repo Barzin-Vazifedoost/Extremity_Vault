@@ -1,4 +1,4 @@
-// Session guard — only admins can access this page
+// Session guard — admin only
 fetch('/Extremity_Vault/src/php/session_check.php')
 .then(response => response.json())
 .then(data => {
@@ -10,6 +10,7 @@ fetch('/Extremity_Vault/src/php/session_check.php')
         window.location.href = '../html/index.html';
         return;
     }
+    loadArticles();
 });
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
@@ -33,9 +34,10 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            messageEl.innerText = 'Article published!';
+            messageEl.innerText = 'Article saved as draft.';
             messageEl.className = 'success';
             document.getElementById('article_form').reset();
+            loadArticles();
         } else {
             messageEl.innerText = data.error;
             messageEl.className = 'error';
@@ -46,3 +48,60 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
         messageEl.className = 'error';
     });
 });
+
+function loadArticles() {
+    fetch('/Extremity_Vault/src/php/get_all_articles.php')
+    .then(response => response.json())
+    .then(data => {
+        const list = document.getElementById('articles-list');
+        list.innerHTML = '';
+
+        if (!data.success) {
+            list.innerHTML = `<p>${data.error}</p>`;
+            return;
+        }
+
+        if (data.articles.length === 0) {
+            list.innerHTML = '<p>No articles yet.</p>';
+            return;
+        }
+
+        data.articles.forEach(article => {
+            const div = document.createElement('div');
+            div.className = 'article';
+            div.id = `article-row-${article.id}`;
+            const isPublished = article.status === 'published';
+            div.innerHTML = `
+                <strong>${article.title}</strong>
+                <span> — ${article.category || 'Uncategorized'} — <em>${article.status}</em></span>
+                <button class="toggle-btn" data-id="${article.id}" data-status="${article.status}">
+                    ${isPublished ? 'Unpublish' : 'Publish'}
+                </button>
+            `;
+            list.appendChild(div);
+        });
+
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const articleId = this.dataset.id;
+                const currentStatus = this.dataset.status;
+                const newStatus = currentStatus === 'published' ? 'draft' : 'published';
+
+                fetch('/Extremity_Vault/src/php/update_status.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ article_id: articleId, status: newStatus })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadArticles();
+                    } else {
+                        document.getElementById('message').innerText = data.error;
+                        document.getElementById('message').className = 'error';
+                    }
+                });
+            });
+        });
+    });
+}

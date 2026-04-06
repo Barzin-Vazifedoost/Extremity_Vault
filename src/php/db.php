@@ -1,30 +1,25 @@
 <?php
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
-    // Local XAMPP settings
-    $host = 'localhost';
-    $dbname = 'vazifedb_local';
+    $host     = 'localhost';
+    $dbname   = 'vazifedb_local';
     $username = 'root';
     $password = '';
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8;unix_socket=/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock";
 } else {
-    // School server settings (or fallback for command line)
-    $host = 'localhost';
-    $dbname = 'vazifedb_local';  // Using local DB for now
-    $username = 'root';
-    $password = '';
+    // School server — update credentials before deploying
+    $host     = 'localhost';
+    $dbname   = 'vazifedb_db';
+    $username = 'vazifedb_local';
+    $password = 'YOUR_PASSWORD_HERE';
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
 }
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8;unix_socket=/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock", $username, $password);
+    $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // Only echo when running from command line for testing
-    if (php_sapi_name() === 'cli') {
-        echo "Connected successfully!";
-    }
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    if (php_sapi_name() === 'cli') {
-        die("Connection failed: " . $e->getMessage());
-    }
-    // For web requests, just die silently or log the error
     error_log("Database connection failed: " . $e->getMessage());
+    die(json_encode(['success' => false, 'error' => 'DB connection failed']));
 }
 ?>

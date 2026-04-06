@@ -3,13 +3,20 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
 .then(articles => {
     const container = document.getElementById('articles-container');
 
+    if (articles.length === 0) {
+        container.innerHTML = '<p>No articles published yet.</p>';
+        return;
+    }
+
     articles.forEach(article => {
+        const date = new Date(article.created_at).toLocaleDateString();
         const div = document.createElement('div');
         div.className = 'article';
         div.innerHTML = `
             <h2>${article.title}</h2>
+            <small>${date}</small>
             <p>${article.content}</p>
-            <div class="comments-section" id="comments-${article.id}">
+            <div class="comments-section">
                 <h3>Comments</h3>
                 <div class="comments-list" id="comments-list-${article.id}"></div>
                 <form class="comment-form" data-article-id="${article.id}">
@@ -20,7 +27,6 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
             </div>
         `;
         container.appendChild(div);
-
         loadComments(article.id);
     });
 
@@ -30,12 +36,11 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
             const articleId = this.dataset.articleId;
             const input = this.querySelector('.comment-input');
             const messageEl = this.querySelector('.comment-message');
-            const content = input.value.trim();
 
             fetch('/Extremity_Vault/src/php/add_comment.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ article_id: articleId, content: content })
+                body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
             })
             .then(response => response.json())
             .then(data => {
@@ -43,7 +48,7 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
                     const list = document.getElementById(`comments-list-${articleId}`);
                     const comment = document.createElement('div');
                     comment.className = 'comment';
-                    comment.innerHTML = `<strong>${data.name}</strong><p>${content}</p>`;
+                    comment.innerHTML = `<strong>${data.name}</strong><p>${input.value.trim()}</p>`;
                     list.appendChild(comment);
                     input.value = '';
                 } else {
