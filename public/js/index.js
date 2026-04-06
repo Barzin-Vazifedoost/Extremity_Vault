@@ -10,6 +10,10 @@ fetch('/Extremity_Vault/src/php/session_check.php')
         document.getElementById('sidebar-admin').style.display = 'block';
     }
     loadArticles();
+})
+.catch(() => {
+    // Session check failed — still show articles
+    loadArticles();
 });
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
