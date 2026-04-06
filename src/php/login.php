@@ -34,6 +34,7 @@ try {
        if(password_verify($password,$user['password'])){
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['name'] = $user['name'];
+        $_SESSION['role'] = $user['role'];
         echo json_encode(['success' => true, 'message' => 'User Logged In']);
 
 
