@@ -25,7 +25,12 @@ try {
 
 }
 catch (PDOException $e) {
-        echo json_encode(['success' => false, 'error' => 'Email already exists']);
+        $msg = $e->getMessage();
+        if (strpos($msg, 'Duplicate entry') !== false) {
+            echo json_encode(['success' => false, 'error' => 'Email already exists']);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'DB error: ' . $msg]);
+        }
         exit();
 }
 

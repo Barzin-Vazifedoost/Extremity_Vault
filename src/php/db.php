@@ -6,10 +6,9 @@ if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
     $password = '';
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8;unix_socket=/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock";
 } else {
-    // School server — update credentials before deploying
     $host     = 'localhost';
     $dbname   = 'vazifedb_db';
-    $username = 'vazifedb';
+    $username = 'vazifedb_local';
     $password = 'Eb-A9,5u';
     $dsn = "mysql:host=localhost;port=3306;dbname=vazifedb_db;charset=utf8";
 }
@@ -20,6 +19,5 @@ try {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     error_log("Database connection failed: " . $e->getMessage());
-    die(json_encode(['success' => false, 'error' => 'DB connection failed']));
+    die(json_encode(['success' => false, 'error' => 'DB connection failed: ' . $e->getMessage()]));
 }
-?>

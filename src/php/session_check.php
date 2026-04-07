@@ -1,6 +1,8 @@
 <?php
 session_start();
 header('Content-Type: application/json');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
 
 if (isset($_SESSION['user_id'])) {
     echo json_encode([

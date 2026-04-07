@@ -1,16 +1,27 @@
 // Session guard — admin only
-fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
-.then(response => response.json())
-.then(data => {
-    if (!data.logged_in) {
-        window.location.href = '../html/login.html';
-        return;
+function checkSession(onSuccess) {
+    fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
+    .then(response => response.json())
+    .then(data => {
+        if (!data.logged_in) {
+            window.location.replace('../html/login.html');
+            return;
+        }
+        if (data.role !== 'admin') {
+            window.location.replace('../html/index.html');
+            return;
+        }
+        if (onSuccess) onSuccess(data);
+    })
+    .catch(() => { window.location.replace('../html/login.html'); });
+}
+
+checkSession(function() { loadArticles(); });
+
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        checkSession(null);
     }
-    if (data.role !== 'admin') {
-        window.location.href = '../html/index.html';
-        return;
-    }
-    loadArticles();
 });
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
