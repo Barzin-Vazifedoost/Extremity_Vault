@@ -11,7 +11,7 @@ if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
     $dbname   = 'vazifedb_db';
     $username = 'vazifedb';
     $password = 'Eb-A9,5u';
-    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
+    $dsn = "mysql:host=localhost;port=3306;dbname=vazifedb_db;charset=utf8";
 }
 
 try {
