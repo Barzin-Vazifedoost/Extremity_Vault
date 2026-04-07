@@ -9,8 +9,8 @@ if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
     // School server — update credentials before deploying
     $host     = 'localhost';
     $dbname   = 'vazifedb_db';
-    $username = 'vazifedb_local';
-    $password = 'YOUR_PASSWORD_HERE';
+    $username = 'vazifedb';
+    $password = 'Eb-A9,5u';
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
 }
 

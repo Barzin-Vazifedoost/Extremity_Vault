@@ -1,4 +1,4 @@
-fetch('/Extremity_Vault/src/php/get_articles.php')
+fetch('../../src/php/get_articles.php')
 .then(response => response.json())
 .then(articles => {
     const container = document.getElementById('articles-container');
@@ -47,7 +47,7 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
             const input = this.querySelector('.comment-input');
             const messageEl = this.querySelector('.comment-message');
 
-            fetch('/Extremity_Vault/src/php/add_comment.php', {
+            fetch('../../src/php/add_comment.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
@@ -75,7 +75,7 @@ fetch('/Extremity_Vault/src/php/get_articles.php')
 });
 
 function loadComments(articleId) {
-    fetch(`/Extremity_Vault/src/php/get_comments.php?article_id=${articleId}`)
+    fetch(`../../src/php/get_comments.php?article_id=${articleId}`)
     .then(response => response.json())
     .then(data => {
         if (!data.success) return;

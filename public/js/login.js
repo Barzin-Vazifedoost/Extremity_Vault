@@ -3,7 +3,7 @@ document.getElementById('login_page').addEventListener('submit', function (e) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('/Extremity_Vault/src/php/login.php', {
+    fetch('../../src/php/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

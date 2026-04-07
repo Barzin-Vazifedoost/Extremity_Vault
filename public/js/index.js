@@ -1,5 +1,5 @@
 // Session guard
-fetch('/Extremity_Vault/src/php/session_check.php')
+fetch('../../src/php/session_check.php')
 .then(response => response.json())
 .then(data => {
     if (!data.logged_in) {
@@ -15,7 +15,7 @@ fetch('/Extremity_Vault/src/php/session_check.php')
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('/Extremity_Vault/src/php/logout.php')
+    fetch('../../src/php/logout.php')
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
@@ -31,7 +31,7 @@ function loadArticles() {
     const q = document.getElementById('search-input').value.trim();
     const category_id = document.getElementById('category-filter').value;
 
-    let url = '/Extremity_Vault/src/php/search_articles.php?';
+    let url = '../../src/php/search_articles.php?';
     if (q) url += `q=${encodeURIComponent(q)}&`;
     if (category_id) url += `category_id=${category_id}`;
 
@@ -83,7 +83,7 @@ function loadArticles() {
         document.querySelectorAll('.bookmark-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
-                fetch('/Extremity_Vault/src/php/add_bookmark.php', {
+                fetch('../../src/php/add_bookmark.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId })
@@ -103,7 +103,7 @@ function loadArticles() {
                 const input = this.querySelector('.comment-input');
                 const messageEl = this.querySelector('.comment-message');
 
-                fetch('/Extremity_Vault/src/php/add_comment.php', {
+                fetch('../../src/php/add_comment.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
@@ -132,7 +132,7 @@ function loadArticles() {
 }
 
 function loadComments(articleId) {
-    fetch(`/Extremity_Vault/src/php/get_comments.php?article_id=${articleId}`)
+    fetch(`../../src/php/get_comments.php?article_id=${articleId}`)
     .then(response => response.json())
     .then(data => {
         if (!data.success) return;
