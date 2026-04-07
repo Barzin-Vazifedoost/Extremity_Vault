@@ -1,5 +1,5 @@
 // Session guard — admin only
-fetch('../../src/php/session_check.php')
+fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
 .then(response => response.json())
 .then(data => {
     if (!data.logged_in) {
@@ -15,7 +15,7 @@ fetch('../../src/php/session_check.php')
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('../../src/php/logout.php')
+    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
@@ -26,7 +26,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     const content = document.getElementById('content').value;
     const messageEl = document.getElementById('message');
 
-    fetch('../../src/php/create_article.php', {
+    fetch('/~vazifedb/Extremity_Vault/src/php/create_article.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, category_id, content })
@@ -50,7 +50,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
 });
 
 function loadArticles() {
-    fetch('../../src/php/get_all_articles.php')
+    fetch('/~vazifedb/Extremity_Vault/src/php/get_all_articles.php')
     .then(response => response.json())
     .then(data => {
         const list = document.getElementById('articles-list');
@@ -96,7 +96,7 @@ function loadArticles() {
                 const currentStatus = this.dataset.status;
                 const newStatus = currentStatus === 'published' ? 'draft' : 'published';
 
-                fetch('../../src/php/update_status.php', {
+                fetch('/~vazifedb/Extremity_Vault/src/php/update_status.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId, status: newStatus })

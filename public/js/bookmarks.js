@@ -1,5 +1,5 @@
 // Session guard
-fetch('../../src/php/session_check.php')
+fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
 .then(response => response.json())
 .then(data => {
     if (!data.logged_in) {
@@ -11,12 +11,12 @@ fetch('../../src/php/session_check.php')
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('../../src/php/logout.php')
+    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
 function loadBookmarks() {
-    fetch('../../src/php/get_bookmarks.php')
+    fetch('/~vazifedb/Extremity_Vault/src/php/get_bookmarks.php')
     .then(response => response.json())
     .then(data => {
         const container = document.getElementById('bookmarks-container');
@@ -59,7 +59,7 @@ function loadBookmarks() {
         document.querySelectorAll('.remove-bookmark').forEach(btn => {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
-                fetch('../../src/php/remove_bookmark.php', {
+                fetch('/~vazifedb/Extremity_Vault/src/php/remove_bookmark.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId })

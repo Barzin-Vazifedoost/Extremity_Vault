@@ -1,5 +1,5 @@
 // Session guard — admin only
-fetch('../../src/php/session_check.php')
+fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
 .then(response => response.json())
 .then(data => {
     if (!data.logged_in) {
@@ -19,7 +19,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     const content = document.getElementById('content').value;
     const messageEl = document.getElementById('message');
 
-    fetch('../../src/php/create_article.php', {
+    fetch('/~vazifedb/Extremity_Vault/src/php/create_article.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, category_id, content })

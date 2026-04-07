@@ -4,7 +4,7 @@ document.getElementById('register_page').addEventListener('submit', function (e)
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('../../src/php/register.php', {
+    fetch('/~vazifedb/Extremity_Vault/src/php/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
