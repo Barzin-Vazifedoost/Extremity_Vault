@@ -3,31 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Extremity Vault</title>
-    <link rel="stylesheet" href="../public/css/style.css">
+    <title>Create Article - Extremity Vault</title>
+    <link rel="stylesheet" href="../public/css/style.css?v=2">
+    <script src="../public/js/botanical.js" defer></script>
     <script src="../public/js/admin.js" defer></script>
 </head>
 <body>
-    <div class="login_form">
-        <h2>Create New Lore Article</h2>
-        <form id="article_form">
-            <div id="login_elements">
+    <nav class="navbar">
+        <span class="nav-brand">Extremity Vault</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="editor.html">Manage Articles</a>
+            <a href="#" id="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Create Article</h1>
+        <form id="article_form" class="editor-form">
+            <div class="editor-fields">
                 <input type="text" id="title" name="title" placeholder="Article Title" required>
-                
-                <select id="category_id" name="category_id" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;">
+                <select id="category_id" name="category_id" required>
                     <option value="">Select Category</option>
                     <option value="1">Characters</option>
                     <option value="2">Settings</option>
                     <option value="3">Items</option>
                 </select>
-
-                <textarea id="content" name="content" placeholder="Enter lore content here..." required style="width: 100%; height: 200px; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: Arial, sans-serif;"></textarea>
-                
+                <textarea id="content" name="content" placeholder="Write your article here..." required></textarea>
                 <input type="submit" value="Publish Article">
                 <div id="message"></div>
             </div>
         </form>
-        <p><a href="login.html">Logout</a></p>
     </div>
 </body>
 </html>

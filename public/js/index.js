@@ -14,9 +14,12 @@ function checkSession(onSuccess) {
 
 checkSession(function(data) {
     if (data.role === 'admin') {
-        document.getElementById('admin-link').style.display = 'inline';
-        document.getElementById('manage-link').style.display = 'inline';
+        document.getElementById('sidebar-admin').style.display = 'block';
     }
+    loadArticles();
+})
+.catch(() => {
+    // Session check failed — still show articles
     loadArticles();
 });
 
@@ -32,12 +35,24 @@ document.getElementById('logout-btn').addEventListener('click', function (e) {
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
-document.getElementById('search-btn').addEventListener('click', function () {
-    loadArticles();
-});
+// Search button
+document.getElementById('search-btn').addEventListener('click', loadArticles);
 
+// Enter key in search
 document.getElementById('search-input').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') loadArticles();
+});
+
+// Sidebar category links
+document.querySelectorAll('#sidebar-categories a').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const cat = this.dataset.category;
+        document.getElementById('category-filter').value = cat;
+        document.querySelectorAll('#sidebar-categories a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+        loadArticles();
+    });
 });
 
 function loadArticles() {
@@ -55,12 +70,12 @@ function loadArticles() {
         container.innerHTML = '';
 
         if (!Array.isArray(articles) || articles.length === 0) {
-            container.innerHTML = '<p>No articles found.</p>';
+            container.innerHTML = '<p style="font-style:italic;color:var(--ink-muted);">No entries found in the vault.</p>';
             return;
         }
 
         articles.forEach(article => {
-            const date = new Date(article.created_at).toLocaleDateString();
+            const date = new Date(article.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
             const div = document.createElement('div');
             div.className = 'article';
             // Create elements safely to prevent XSS
@@ -74,10 +89,10 @@ function loadArticles() {
             div.innerHTML = `
                 <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
                 <div class="comments-section">
-                    <h3>Comments</h3>
+                    <h3>Discussion</h3>
                     <div class="comments-list" id="comments-list-${article.id}"></div>
                     <form class="comment-form" data-article-id="${article.id}">
-                        <input type="text" class="comment-input" placeholder="Write a comment..." required>
+                        <input type="text" class="comment-input" placeholder="Leave a note…" required>
                         <button type="submit">Post</button>
                         <div class="comment-message"></div>
                     </form>
@@ -93,6 +108,7 @@ function loadArticles() {
             loadComments(article.id);
         });
 
+        // Bookmark buttons
         document.querySelectorAll('.bookmark-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
@@ -103,12 +119,13 @@ function loadArticles() {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    this.innerText = data.success ? 'Bookmarked' : data.error;
+                    this.innerText = data.success ? 'Bookmarked ✦' : data.error;
                     this.disabled = data.success;
                 });
             });
         });
 
+        // Comment forms
         document.querySelectorAll('.comment-form').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();

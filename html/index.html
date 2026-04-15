@@ -4,33 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extremity Vault</title>
-    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="../public/css/style.css?v=2">
+    <script src="../public/js/botanical.js" defer></script>
     <script src="../public/js/index.js" defer></script>
 </head>
 <body>
+
     <nav class="navbar">
         <span class="nav-brand">Extremity Vault</span>
         <div class="nav-links">
-            <a href="bookmarks.html">My Bookmarks</a>
-            <a href="admin.html" id="admin-link" style="display:none;">Create Article</a>
-            <a href="editor.html" id="manage-link" style="display:none;">Manage Articles</a>
+            <a href="articles.html">Archive</a>
+            <a href="bookmarks.html">Bookmarks</a>
             <a href="#" id="logout-btn">Logout</a>
         </div>
     </nav>
 
-    <div class="container">
-        <h1>Articles</h1>
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search articles...">
-            <select id="category-filter">
-                <option value="">All Categories</option>
-                <option value="1">Characters</option>
-                <option value="2">Settings</option>
-                <option value="3">Items</option>
-            </select>
-            <button id="search-btn">Search</button>
-        </div>
-        <div id="articles-container"></div>
+    <div class="page-layout">
+
+        <!-- ── Sidebar ── -->
+        <aside class="sidebar">
+
+            <div class="sidebar-illustration">
+                <!-- Hyacinth botanical sketch -->
+                <svg width="68" height="96" viewBox="0 0 68 96" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Stem -->
+                    <path d="M34,88 C34,72 33,56 34,34" stroke="#7a8c6e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                    <!-- Left leaf -->
+                    <path d="M34,72 C24,62 10,63 16,53" stroke="#7a8c6e" stroke-width="1" fill="none" stroke-linecap="round"/>
+                    <!-- Right leaf -->
+                    <path d="M34,65 C44,55 58,56 52,46" stroke="#7a8c6e" stroke-width="1" fill="none" stroke-linecap="round"/>
+                    <!-- Flower cluster — bottom row -->
+                    <circle cx="26" cy="30" r="4.5" fill="#7b6ea8" fill-opacity="0.52"/>
+                    <circle cx="42" cy="28" r="4"   fill="#a89ed0" fill-opacity="0.52"/>
+                    <!-- Middle row -->
+                    <circle cx="20" cy="22" r="3.5" fill="#c5b8d4" fill-opacity="0.58"/>
+                    <circle cx="34" cy="21" r="4"   fill="#7b6ea8" fill-opacity="0.48"/>
+                    <circle cx="48" cy="20" r="3.5" fill="#a89ed0" fill-opacity="0.5"/>
+                    <!-- Top row -->
+                    <circle cx="26" cy="13" r="3"   fill="#7b6ea8" fill-opacity="0.45"/>
+                    <circle cx="42" cy="12" r="3"   fill="#c5b8d4" fill-opacity="0.52"/>
+                    <!-- Tip -->
+                    <circle cx="34" cy="6"  r="2.5" fill="#a89ed0" fill-opacity="0.48"/>
+                    <!-- Tiny petals on flowers -->
+                    <circle cx="26" cy="26" r="1.5" fill="#d4c8e8" fill-opacity="0.6"/>
+                    <circle cx="42" cy="24" r="1.5" fill="#d4c8e8" fill-opacity="0.6"/>
+                    <circle cx="34" cy="17" r="1.5" fill="#d4c8e8" fill-opacity="0.55"/>
+                </svg>
+            </div>
+
+            <p class="sidebar-section-title">Navigate</p>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="active">✦ &nbsp;The Vault</a>
+                <a href="bookmarks.html">✦ &nbsp;My Bookmarks</a>
+                <a href="articles.html">✦ &nbsp;Archive</a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <p class="sidebar-section-title">Categories</p>
+            <nav class="sidebar-nav" id="sidebar-categories">
+                <a href="#" data-category="">❧ &nbsp;All Entries</a>
+                <a href="#" data-category="1">❧ &nbsp;Characters</a>
+                <a href="#" data-category="2">❧ &nbsp;Settings</a>
+                <a href="#" data-category="3">❧ &nbsp;Items</a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <div id="sidebar-admin" style="display:none;">
+                <p class="sidebar-section-title">Editor</p>
+                <nav class="sidebar-nav">
+                    <a href="admin.html">✦ &nbsp;Create Article</a>
+                    <a href="editor.html">✦ &nbsp;Manage Articles</a>
+                </nav>
+                <div class="sidebar-divider"></div>
+            </div>
+
+        </aside>
+
+        <!-- ── Main Content ── -->
+        <main class="main-content">
+            <h1>The Vault</h1>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search the archives…">
+                <select id="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="1">Characters</option>
+                    <option value="2">Settings</option>
+                    <option value="3">Items</option>
+                </select>
+                <button id="search-btn">Search</button>
+            </div>
+
+            <div id="articles-container"></div>
+        </main>
+
     </div>
+
 </body>
 </html>

@@ -1,3 +1,9 @@
+document.getElementById('logout-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
+    .then(() => { window.location.href = '../html/login.html'; });
+});
+
 fetch('/~vazifedb/Extremity_Vault/src/php/get_articles.php')
 .then(response => response.json())
 .then(articles => {
