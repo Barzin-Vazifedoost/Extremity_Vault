@@ -1,10 +1,12 @@
+const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
+
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
+    fetch(`${BASE}/src/php/logout.php`)
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
-fetch('/~vazifedb/Extremity_Vault/src/php/get_articles.php')
+fetch(`${BASE}/src/php/get_articles.php`)
 .then(response => response.json())
 .then(articles => {
     const container = document.getElementById('articles-container');
@@ -53,7 +55,7 @@ fetch('/~vazifedb/Extremity_Vault/src/php/get_articles.php')
             const input = this.querySelector('.comment-input');
             const messageEl = this.querySelector('.comment-message');
 
-            fetch('/~vazifedb/Extremity_Vault/src/php/add_comment.php', {
+            fetch(`${BASE}/src/php/add_comment.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
@@ -81,7 +83,7 @@ fetch('/~vazifedb/Extremity_Vault/src/php/get_articles.php')
 });
 
 function loadComments(articleId) {
-    fetch(`/~vazifedb/Extremity_Vault/src/php/get_comments.php?article_id=${articleId}`)
+    fetch(`${BASE}/src/php/get_comments.php?article_id=${articleId}`)
     .then(response => response.json())
     .then(data => {
         if (!data.success) return;

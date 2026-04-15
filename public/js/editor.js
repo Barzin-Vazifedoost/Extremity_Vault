@@ -1,6 +1,8 @@
+const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
+
 // Session guard — admin only
 function checkSession(onSuccess) {
-    fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
+    fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())
     .then(data => {
         if (!data.logged_in) {
@@ -26,7 +28,7 @@ window.addEventListener('pageshow', function(event) {
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
+    fetch(`${BASE}/src/php/logout.php`)
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
@@ -37,7 +39,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     const content = document.getElementById('content').value;
     const messageEl = document.getElementById('message');
 
-    fetch('/~vazifedb/Extremity_Vault/src/php/create_article.php', {
+    fetch(`${BASE}/src/php/create_article.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, category_id, content })
@@ -61,7 +63,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
 });
 
 function loadArticles() {
-    fetch('/~vazifedb/Extremity_Vault/src/php/get_all_articles.php')
+    fetch(`${BASE}/src/php/get_all_articles.php`)
     .then(response => response.json())
     .then(data => {
         const list = document.getElementById('articles-list');
@@ -107,7 +109,7 @@ function loadArticles() {
                 const currentStatus = this.dataset.status;
                 const newStatus = currentStatus === 'published' ? 'draft' : 'published';
 
-                fetch('/~vazifedb/Extremity_Vault/src/php/update_status.php', {
+                fetch(`${BASE}/src/php/update_status.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId, status: newStatus })

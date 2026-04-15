@@ -1,6 +1,10 @@
+const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
+
+let allArticles = [];
+
 // Session guard
 function checkSession(onSuccess) {
-    fetch('/~vazifedb/Extremity_Vault/src/php/session_check.php')
+    fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())
     .then(data => {
         if (!data.logged_in) {
@@ -16,11 +20,7 @@ checkSession(function(data) {
     if (data.role === 'admin') {
         document.getElementById('sidebar-admin').style.display = 'block';
     }
-    loadArticles();
-})
-.catch(() => {
-    // Session check failed — still show articles
-    loadArticles();
+    fetchAllArticles();
 });
 
 window.addEventListener('pageshow', function(event) {
@@ -31,16 +31,16 @@ window.addEventListener('pageshow', function(event) {
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    fetch('/~vazifedb/Extremity_Vault/src/php/logout.php')
+    fetch(`${BASE}/src/php/logout.php`)
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
 // Search button
-document.getElementById('search-btn').addEventListener('click', loadArticles);
+document.getElementById('search-btn').addEventListener('click', applyFilter);
 
 // Enter key in search
 document.getElementById('search-input').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') loadArticles();
+    if (e.key === 'Enter') applyFilter();
 });
 
 // Sidebar category links
@@ -51,118 +51,133 @@ document.querySelectorAll('#sidebar-categories a').forEach(link => {
         document.getElementById('category-filter').value = cat;
         document.querySelectorAll('#sidebar-categories a').forEach(a => a.classList.remove('active'));
         this.classList.add('active');
-        loadArticles();
+        applyFilter();
     });
 });
 
-function loadArticles() {
-    const q = document.getElementById('search-input').value.trim();
-    const category_id = document.getElementById('category-filter').value;
-
-    let url = '/~vazifedb/Extremity_Vault/src/php/search_articles.php?';
-    if (q) url += `q=${encodeURIComponent(q)}&`;
-    if (category_id) url += `category_id=${category_id}`;
-
-    fetch(url)
+// Fetch all published articles once, then filter client-side
+function fetchAllArticles() {
+    fetch(`${BASE}/src/php/search_articles.php`)
     .then(response => response.json())
     .then(articles => {
-        const container = document.getElementById('articles-container');
-        container.innerHTML = '';
-
-        if (!Array.isArray(articles) || articles.length === 0) {
-            container.innerHTML = '<p style="font-style:italic;color:var(--ink-muted);">No entries found in the vault.</p>';
-            return;
+        if (Array.isArray(articles)) {
+            allArticles = articles;
         }
+        applyFilter();
+    });
+}
 
-        articles.forEach(article => {
-            const date = new Date(article.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
-            const div = document.createElement('div');
-            div.className = 'article';
-            // Create elements safely to prevent XSS
-            const titleEl = document.createElement('h2');
-            titleEl.textContent = article.title;
-            const dateEl = document.createElement('small');
-            dateEl.textContent = `${article.category || 'Uncategorized'} — ${date}`;
-            const contentEl = document.createElement('p');
-            contentEl.textContent = article.content;
-            
-            div.innerHTML = `
-                <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
-                <div class="comments-section">
-                    <h3>Discussion</h3>
-                    <div class="comments-list" id="comments-list-${article.id}"></div>
-                    <form class="comment-form" data-article-id="${article.id}">
-                        <input type="text" class="comment-input" placeholder="Leave a note…" required>
-                        <button type="submit">Post</button>
-                        <div class="comment-message"></div>
-                    </form>
-                </div>
-            `;
-            
-            // Insert safe elements
-            div.insertBefore(contentEl, div.firstChild);
-            div.insertBefore(dateEl, div.firstChild); 
-            div.insertBefore(titleEl, div.firstChild);
-            
-            container.appendChild(div);
-            loadComments(article.id);
-        });
+function applyFilter() {
+    const q = document.getElementById('search-input').value.trim().toLowerCase();
+    const category_id = document.getElementById('category-filter').value;
 
-        // Bookmark buttons
-        document.querySelectorAll('.bookmark-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const articleId = this.dataset.id;
-                fetch('/~vazifedb/Extremity_Vault/src/php/add_bookmark.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ article_id: articleId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    this.innerText = data.success ? 'Bookmarked ✦' : data.error;
-                    this.disabled = data.success;
-                });
+    const filtered = allArticles.filter(function(article) {
+        const matchQ = !q ||
+            article.title.toLowerCase().includes(q) ||
+            article.content.toLowerCase().includes(q);
+        const matchCat = !category_id || String(article.category_id) === category_id;
+        return matchQ && matchCat;
+    });
+
+    renderArticles(filtered);
+}
+
+function renderArticles(articles) {
+    const container = document.getElementById('articles-container');
+    container.innerHTML = '';
+
+    if (articles.length === 0) {
+        container.innerHTML = '<p style="font-style:italic;color:var(--ink-muted);">No entries found in the vault.</p>';
+        return;
+    }
+
+    articles.forEach(article => {
+        const date = new Date(article.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+        const div = document.createElement('div');
+        div.className = 'article';
+
+        const titleEl = document.createElement('h2');
+        titleEl.textContent = article.title;
+        const dateEl = document.createElement('small');
+        dateEl.textContent = `${article.category || 'Uncategorized'} — ${date}`;
+        const contentEl = document.createElement('p');
+        contentEl.textContent = article.content;
+
+        div.innerHTML = `
+            <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
+            <div class="comments-section">
+                <h3>Discussion</h3>
+                <div class="comments-list" id="comments-list-${article.id}"></div>
+                <form class="comment-form" data-article-id="${article.id}">
+                    <input type="text" class="comment-input" placeholder="Leave a note…" required>
+                    <button type="submit">Post</button>
+                    <div class="comment-message"></div>
+                </form>
+            </div>
+        `;
+
+        div.insertBefore(contentEl, div.firstChild);
+        div.insertBefore(dateEl, div.firstChild);
+        div.insertBefore(titleEl, div.firstChild);
+
+        container.appendChild(div);
+        loadComments(article.id);
+    });
+
+    // Bookmark buttons
+    document.querySelectorAll('.bookmark-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const articleId = this.dataset.id;
+            fetch(`${BASE}/src/php/add_bookmark.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ article_id: articleId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.innerText = data.success ? 'Bookmarked ✦' : data.error;
+                this.disabled = data.success;
             });
         });
+    });
 
-        // Comment forms
-        document.querySelectorAll('.comment-form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const articleId = this.dataset.articleId;
-                const input = this.querySelector('.comment-input');
-                const messageEl = this.querySelector('.comment-message');
+    // Comment forms
+    document.querySelectorAll('.comment-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const articleId = this.dataset.articleId;
+            const input = this.querySelector('.comment-input');
+            const messageEl = this.querySelector('.comment-message');
 
-                fetch('/~vazifedb/Extremity_Vault/src/php/add_comment.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const list = document.getElementById(`comments-list-${articleId}`);
-                        const comment = document.createElement('div');
-                        comment.className = 'comment';
-                        const nameEl = document.createElement('strong');
-                        nameEl.textContent = data.name;
-                        const contentEl = document.createElement('p');
-                        contentEl.textContent = input.value.trim();
-                        comment.appendChild(nameEl);
-                        comment.appendChild(contentEl);
-                        list.appendChild(comment);
-                        input.value = '';
-                    } else {
-                        messageEl.innerText = data.error;
-                    }
-                });
+            fetch(`${BASE}/src/php/add_comment.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ article_id: articleId, content: input.value.trim() })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const list = document.getElementById(`comments-list-${articleId}`);
+                    const comment = document.createElement('div');
+                    comment.className = 'comment';
+                    const nameEl = document.createElement('strong');
+                    nameEl.textContent = data.name;
+                    const contentEl = document.createElement('p');
+                    contentEl.textContent = input.value.trim();
+                    comment.appendChild(nameEl);
+                    comment.appendChild(contentEl);
+                    list.appendChild(comment);
+                    input.value = '';
+                } else {
+                    messageEl.innerText = data.error;
+                }
             });
         });
     });
 }
 
 function loadComments(articleId) {
-    fetch(`/~vazifedb/Extremity_Vault/src/php/get_comments.php?article_id=${articleId}`)
+    fetch(`${BASE}/src/php/get_comments.php?article_id=${articleId}`)
     .then(response => response.json())
     .then(data => {
         if (!data.success) return;
