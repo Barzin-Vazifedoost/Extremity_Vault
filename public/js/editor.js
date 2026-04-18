@@ -1,8 +1,7 @@
 /**
  * editor.js
- * Article management controller for the Editor page.
- * Admin-only: creates new articles, publishes/unpublishes existing ones,
- * and autosaves drafts to localStorage to prevent accidental data loss.
+ * Unified admin editor: create articles, publish/unpublish, and delete drafts.
+ * Autosaves the create form to localStorage to prevent accidental data loss.
  *
  * @author Barzin Vazifedoost
  */
@@ -35,10 +34,8 @@ function checkSession(onSuccess) {
     .catch(() => { window.location.replace('../html/login.html'); });
 }
 
-const AUTOSAVE_KEY = 'ev_editor_draft';
-
 // Restore any saved draft on load
-checkSession(function() {
+checkSession(function () {
     const saved = localStorage.getItem(AUTOSAVE_KEY);
     if (saved) {
         try {
@@ -46,9 +43,7 @@ checkSession(function() {
             if (draft.title)       document.getElementById('title').value       = draft.title;
             if (draft.category_id) document.getElementById('category_id').value = draft.category_id;
             if (draft.content)     document.getElementById('content').value     = draft.content;
-            const msgEl = document.getElementById('message');
-            msgEl.textContent = 'Draft restored.';
-            msgEl.className = 'success';
+            showMessage('Draft restored.', 'success');
         } catch (e) { /* ignore corrupt data */ }
     }
     loadArticles();
@@ -56,8 +51,7 @@ checkSession(function() {
 
 // Autosave on any field change
 (function () {
-    const fields = ['title', 'category_id', 'content'];
-    fields.forEach(function (id) {
+    ['title', 'category_id', 'content'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', function () {
             const draft = {
                 title:       document.getElementById('title').value,
@@ -69,24 +63,21 @@ checkSession(function() {
     });
 })();
 
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        checkSession(null);
-    }
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) checkSession(null);
 });
 
 document.getElementById('logout-btn').addEventListener('click', function (e) {
     e.preventDefault();
     fetch(`${BASE}/src/php/logout.php`)
-    .then(() => { window.location.href = '../html/login.html'; });
+        .then(() => { window.location.href = '../html/login.html'; });
 });
 
 document.getElementById('article_form').addEventListener('submit', function (e) {
     e.preventDefault();
-    const title = document.getElementById('title').value;
+    const title       = document.getElementById('title').value;
     const category_id = document.getElementById('category_id').value;
-    const content = document.getElementById('content').value;
-    const messageEl = document.getElementById('message');
+    const content     = document.getElementById('content').value;
 
     fetch(`${BASE}/src/php/create_article.php`, {
         method: 'POST',
@@ -94,90 +85,119 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
         body: JSON.stringify({ title, category_id, content })
     })
     .then(response => response.json())
-    .then(data => {
+    .then(function (data) {
         if (data.success) {
-            messageEl.innerText = 'Article saved as draft.';
-            messageEl.className = 'success';
+            showMessage('Article saved as draft.', 'success');
             localStorage.removeItem(AUTOSAVE_KEY);
             document.getElementById('article_form').reset();
             loadArticles();
         } else {
-            messageEl.innerText = data.error;
-            messageEl.className = 'error';
+            showMessage(data.error, 'error');
         }
     })
-    .catch(() => {
-        messageEl.innerText = 'Server error. Try again.';
-        messageEl.className = 'error';
-    });
+    .catch(function () { showMessage('Server error. Try again.', 'error'); });
 });
 
 /**
  * Fetches all articles (any status) from the server and renders them
- * in the #articles-list element with Publish/Unpublish toggle buttons.
+ * in the #articles-list element with Publish/Unpublish and Delete buttons.
  */
 function loadArticles() {
     fetch(`${BASE}/src/php/get_all_articles.php`)
     .then(response => response.json())
-    .then(data => {
+    .then(function (data) {
         const list = document.getElementById('articles-list');
         list.innerHTML = '';
 
         if (!data.success) {
-            const errorEl = document.createElement('p');
-            errorEl.textContent = data.error;
-            list.appendChild(errorEl);
+            list.innerHTML = `<p>${data.error}</p>`;
             return;
         }
-
         if (data.articles.length === 0) {
             list.innerHTML = '<p>No articles yet.</p>';
             return;
         }
 
-        data.articles.forEach(article => {
+        data.articles.forEach(function (article) {
             const div = document.createElement('div');
             div.className = 'article';
             div.id = `article-row-${article.id}`;
             const isPublished = article.status === 'published';
-            
+
             const titleEl = document.createElement('strong');
             titleEl.textContent = article.title;
-            const categoryEl = document.createElement('span');
-            categoryEl.innerHTML = ` — ${article.category || 'Uncategorized'} — <em>${article.status}</em>`;
-            const buttonEl = document.createElement('button');
-            buttonEl.className = 'toggle-btn';
-            buttonEl.dataset.id = article.id;
-            buttonEl.dataset.status = article.status;
-            buttonEl.textContent = isPublished ? 'Unpublish' : 'Publish';
-            
+
+            const metaEl = document.createElement('span');
+            metaEl.innerHTML = ` — ${article.category || 'Uncategorized'} — <em>${article.status}</em>`;
+
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'toggle-btn';
+            toggleBtn.dataset.id = article.id;
+            toggleBtn.dataset.status = article.status;
+            toggleBtn.textContent = isPublished ? 'Unpublish' : 'Publish';
+
             div.appendChild(titleEl);
-            div.appendChild(categoryEl);
-            div.appendChild(buttonEl);
+            div.appendChild(metaEl);
+            div.appendChild(toggleBtn);
+
+            if (!isPublished) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.dataset.id = article.id;
+                deleteBtn.textContent = 'Delete';
+                div.appendChild(deleteBtn);
+            }
+
             list.appendChild(div);
         });
 
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
+        // Publish / Unpublish
+        document.querySelectorAll('.toggle-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
-                const currentStatus = this.dataset.status;
-                const newStatus = currentStatus === 'published' ? 'draft' : 'published';
-
+                const newStatus = this.dataset.status === 'published' ? 'draft' : 'published';
                 fetch(`${BASE}/src/php/update_status.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ article_id: articleId, status: newStatus })
                 })
                 .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        loadArticles();
-                    } else {
-                        document.getElementById('message').innerText = data.error;
-                        document.getElementById('message').className = 'error';
-                    }
+                .then(function (data) {
+                    if (data.success) loadArticles();
+                    else showMessage(data.error, 'error');
+                });
+            });
+        });
+
+        // Delete draft
+        document.querySelectorAll('.delete-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Permanently delete this draft?')) return;
+                const articleId = this.dataset.id;
+                fetch(`${BASE}/src/php/delete_article.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ article_id: articleId })
+                })
+                .then(response => response.json())
+                .then(function (data) {
+                    if (data.success) document.getElementById(`article-row-${articleId}`).remove();
+                    else showMessage(data.error, 'error');
                 });
             });
         });
     });
 }
+
+/**
+ * Displays a status message in the #message element.
+ *
+ * @param {string} text      - Message to display.
+ * @param {string} className - CSS class ('success' or 'error').
+ */
+function showMessage(text, className) {
+    const el = document.getElementById('message');
+    el.textContent = text;
+    el.className = className;
+}
+

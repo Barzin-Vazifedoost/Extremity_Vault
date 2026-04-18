@@ -583,6 +583,24 @@ input[type="submit"]:hover {
     background: linear-gradient(to bottom, var(--hyacinth-lt), var(--hyacinth));
     color: white;
 }
+.delete-btn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    cursor: pointer;
+    border: 1px solid #c0857a;
+    transition: all var(--ease);
+    background: linear-gradient(to bottom, #f5e8e6, #e8b8b0);
+    color: #8b3a30;
+    margin-left: 6px;
+}
+.delete-btn:hover {
+    background: linear-gradient(to bottom, #d9534f, #b52b27);
+    border-color: #8b2020;
+    color: white;
+}
 
 /* ─── Infobox — Specimen Card ────────────────────────────── */
 .infobox {
@@ -632,6 +650,71 @@ input[type="submit"]:hover {
 @keyframes fadeBloom {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Journal Page ───────────────────────────────────────── */
+.journal-intro {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-bottom: 32px;
+    max-width: 640px;
+}
+.journal-entry {
+    background: var(--parchment-alt);
+    border: 1px solid var(--border-lt);
+    border-left: 3px solid var(--hyacinth-lt);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    animation: fadeBloom 0.4s ease both;
+}
+.journal-header {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.journal-lab {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--hyacinth);
+    padding: 2px 8px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.journal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    margin: 0;
+    flex: 1;
+}
+.journal-date {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-left: auto;
+}
+.journal-body p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+.journal-body p:last-child { margin-bottom: 0; }
+.journal-body code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    background: rgba(123, 110, 168, 0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--hyacinth);
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
