@@ -1,4 +1,13 @@
 <?php
+/**
+ * logout.php
+ * Destroys the current user session and clears the session cookie.
+ * Safe to call via AJAX — returns JSON confirmation.
+ *
+ * @author Barzin Vazifedoost
+ *
+ * @return JSON {success: true}
+ */
 session_start();
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {

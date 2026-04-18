@@ -1,8 +1,23 @@
+/**
+ * index.js
+ * Main page controller for Extremity Vault.
+ * Handles session verification, live article search with debounce,
+ * client-side filtering by category, bookmark creation (AJAX),
+ * and comment loading/posting (AJAX).
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
 let allArticles = [];
 
-// Session guard
+/**
+ * Verifies the user's session with the server.
+ * Redirects to login if the session is invalid.
+ *
+ * @param {Function|null} onSuccess - Callback invoked with session data on success.
+ */
 function checkSession(onSuccess) {
     fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())
@@ -64,7 +79,42 @@ document.querySelectorAll('#sidebar-categories a').forEach(link => {
     });
 });
 
-// Fetch all published articles once, then filter client-side
+// ── Mobile sidebar toggle ─────────────────────────────────────────────────
+(function () {
+    const toggle   = document.getElementById('sidebar-toggle');
+    const sidebar  = document.querySelector('.sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (!toggle || !sidebar || !backdrop) return;
+
+    /** Opens the off-canvas sidebar on mobile. */
+    function openSidebar() {
+        sidebar.classList.add('open');
+        backdrop.classList.add('visible');
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    /** Closes the off-canvas sidebar on mobile. */
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('visible');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    });
+    backdrop.addEventListener('click', closeSidebar);
+
+    // Auto-close when a category is tapped
+    document.querySelectorAll('#sidebar-categories a').forEach(function (a) {
+        a.addEventListener('click', closeSidebar);
+    });
+})();
+
+/**
+ * Fetches all published articles from the server once and stores them
+ * in the module-level allArticles array, then renders the initial view.
+ */
 function fetchAllArticles() {
     fetch(`${BASE}/src/php/search_articles.php`)
     .then(response => response.json())
@@ -76,6 +126,10 @@ function fetchAllArticles() {
     });
 }
 
+/**
+ * Filters allArticles by the current search query and selected category,
+ * then delegates to renderArticles() for DOM updates.
+ */
 function applyFilter() {
     const q = document.getElementById('search-input').value.trim().toLowerCase();
     const category_id = document.getElementById('category-filter').value;
@@ -91,6 +145,12 @@ function applyFilter() {
     renderArticles(filtered);
 }
 
+/**
+ * Renders an array of article objects into the #articles-container element.
+ * Appends bookmark buttons and comment forms with AJAX event listeners.
+ *
+ * @param {Array<Object>} articles - Articles to render.
+ */
 function renderArticles(articles) {
     const container = document.getElementById('articles-container');
     container.innerHTML = '';
@@ -185,6 +245,12 @@ function renderArticles(articles) {
     });
 }
 
+/**
+ * Loads existing comments for the given article from the server
+ * and appends them to the article's #comments-list-{id} element.
+ *
+ * @param {number|string} articleId - The article whose comments to load.
+ */
 function loadComments(articleId) {
     fetch(`${BASE}/src/php/get_comments.php?article_id=${articleId}`)
     .then(response => response.json())

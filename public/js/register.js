@@ -1,3 +1,12 @@
+/**
+ * register.js
+ * Registration form controller for Extremity Vault.
+ * Submits name, email, and password to register.php via AJAX (fetch),
+ * then redirects to login on success or displays an inline error.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
 document.getElementById('register_page').addEventListener('submit', function (e) {

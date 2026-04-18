@@ -1,3 +1,12 @@
+/**
+ * login.js
+ * Login form controller for Extremity Vault.
+ * Submits credentials to login.php via AJAX (fetch) and redirects
+ * to the main vault on success, or displays an error message on failure.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
 document.getElementById('login_page').addEventListener('submit', function (e) {

@@ -1,4 +1,16 @@
 <?php
+/**
+ * get_comments.php
+ * Returns all comments for a given article, ordered chronologically.
+ * Public endpoint — no authentication required.
+ * Joins with the users table to include each commenter's display name.
+ *
+ * @author Barzin Vazifedoost
+ *
+ * @param int article_id GET param. ID of the article whose comments to fetch.
+ *
+ * @return JSON {success: bool, comments?: array, error?: string}
+ */
 header('Content-Type: application/json');
 require_once 'db.php';
 

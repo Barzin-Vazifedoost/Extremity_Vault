@@ -1,4 +1,16 @@
 <?php
+/**
+ * remove_bookmark.php
+ * Removes a specific bookmark for the authenticated user.
+ * Accepts JSON POST body with 'article_id'.
+ * Only deletes the row matching both the session user_id and article_id.
+ *
+ * @author Barzin Vazifedoost
+ *
+ * @param int article_id ID of the bookmarked article to remove.
+ *
+ * @return JSON {success: bool, message?: string, error?: string}
+ */
 session_start();
 header('Content-Type: application/json');
 require_once 'db.php';

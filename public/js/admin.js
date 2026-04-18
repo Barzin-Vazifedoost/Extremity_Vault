@@ -1,6 +1,18 @@
+/**
+ * admin.js
+ * Admin article-creation page controller for Extremity Vault.
+ * Enforces admin-only access via session check, then handles
+ * the Create Article form submission via AJAX.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
-// Session guard — admin only
+/**
+ * Verifies the user's session and enforces admin-only access.
+ * Redirects to login if unauthenticated, or to home if not admin.
+ */
 function checkSession() {
     fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())

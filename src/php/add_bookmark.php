@@ -1,4 +1,16 @@
 <?php
+/**
+ * add_bookmark.php
+ * Saves an article to the authenticated user's bookmarks.
+ * Accepts JSON POST body with 'article_id'.
+ * Rejects duplicate bookmarks gracefully via PDO exception handling.
+ *
+ * @author Barzin Vazifedoost
+ *
+ * @param int article_id ID of the article to bookmark.
+ *
+ * @return JSON {success: bool, message?: string, error?: string}
+ */
 session_start();
 header('Content-Type: application/json');
 require_once 'db.php';

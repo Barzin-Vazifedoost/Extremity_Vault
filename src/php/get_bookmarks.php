@@ -1,4 +1,14 @@
 <?php
+/**
+ * get_bookmarks.php
+ * Returns all articles bookmarked by the authenticated user.
+ * Joins the bookmarks table with articles to return full article data.
+ * Results are ordered newest bookmark first.
+ *
+ * @author Barzin Vazifedoost
+ *
+ * @return JSON {success: bool, bookmarks?: array, error?: string}
+ */
 session_start();
 header('Content-Type: application/json');
 require_once 'db.php';

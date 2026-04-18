@@ -1,6 +1,23 @@
+/**
+ * editor.js
+ * Article management controller for the Editor page.
+ * Admin-only: creates new articles, publishes/unpublishes existing ones,
+ * and autosaves drafts to localStorage to prevent accidental data loss.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
-// Session guard — admin only
+/** localStorage key used to persist unsaved draft content. */
+const AUTOSAVE_KEY = 'ev_editor_draft';
+
+/**
+ * Verifies the user's session and enforces admin-only access.
+ * Redirects to login if unauthenticated, or to home if not admin.
+ *
+ * @param {Function|null} onSuccess - Callback invoked with session data on success.
+ */
 function checkSession(onSuccess) {
     fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())
@@ -95,6 +112,10 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     });
 });
 
+/**
+ * Fetches all articles (any status) from the server and renders them
+ * in the #articles-list element with Publish/Unpublish toggle buttons.
+ */
 function loadArticles() {
     fetch(`${BASE}/src/php/get_all_articles.php`)
     .then(response => response.json())

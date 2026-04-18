@@ -1,3 +1,13 @@
+/**
+ * botanical.js
+ * Ambient botanical particle animation for Extremity Vault.
+ * Creates a fixed, full-screen canvas behind all content and animates
+ * drifting pollen grains and flower petals in the site's hyacinth palette.
+ * Uses requestAnimationFrame for smooth, CPU-efficient rendering.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 // Botanical Particles — drifting pollen & petals
 (function () {
     const canvas = document.createElement('canvas');

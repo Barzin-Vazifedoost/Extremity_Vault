@@ -360,6 +360,8 @@ small {
     margin-top: 20px;
     padding-top: 4px;
     position: relative;
+    min-width: 0;
+    width: 100%;
 }
 .comments-section h3 {
     font-family: 'Cinzel', serif;
@@ -376,6 +378,8 @@ small {
     border-radius: 0 var(--radius) var(--radius) 0;
     margin-bottom: 8px;
     transition: border-color var(--ease);
+    min-width: 0;
+    overflow: hidden;
 }
 .comment:hover { border-left-color: var(--hyacinth); }
 .comment strong {
@@ -385,11 +389,15 @@ small {
     color: var(--hyacinth);
     letter-spacing: 0.05em;
     margin-bottom: 4px;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .comment p {
     font-size: 0.88rem;
     margin-bottom: 0;
     color: var(--ink-soft);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .comment-form {
     display: flex;
@@ -631,3 +639,132 @@ input[type="submit"]:hover {
 ::-webkit-scrollbar-track { background: var(--parchment-alt); }
 ::-webkit-scrollbar-thumb { background: var(--hyacinth-lt); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--hyacinth); }
+
+/* ─── Mobile Hamburger Button ────────────────────────────── */
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border-md);
+    border-radius: var(--radius);
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 1.15rem;
+    color: var(--hyacinth-dk);
+    line-height: 1;
+    transition: background var(--ease);
+}
+.sidebar-toggle:hover {
+    background: rgba(123, 110, 168, 0.1);
+}
+
+/* ─── Sidebar Backdrop (mobile overlay) ─────────────────── */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 35, 24, 0.38);
+    z-index: 40;
+}
+.sidebar-backdrop.visible { display: block; }
+
+/* ─── Responsive — Tablet (≤ 768px) ─────────────────────── */
+@media (max-width: 768px) {
+
+    /* Navbar */
+    .navbar {
+        padding: 10px 16px;
+        gap: 8px;
+    }
+    .navbar::after { display: none; }
+    .nav-brand  { font-size: 1rem; letter-spacing: 0.08em; }
+    .nav-links  { gap: 14px; }
+    .nav-links a { font-size: 0.82rem; }
+
+    /* Show hamburger */
+    .sidebar-toggle { display: block; }
+
+    /* Stack layout */
+    .page-layout { flex-direction: column; }
+
+    /* Off-canvas sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        width: 240px;
+        height: 100%;
+        z-index: 50;
+        overflow-y: auto;
+        padding-top: 56px;
+        transition: left 0.28s ease;
+        box-shadow: 4px 0 22px rgba(44, 35, 24, 0.18);
+        border-right: none;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar::after { display: none; }
+
+    /* Main content — full width */
+    .main-content { padding: 20px 16px; width: 100%; }
+    .container    { padding: 20px 16px; }
+
+    /* Search bar stacks vertically */
+    .search-bar {
+        flex-direction: column;
+        padding: 10px 12px;
+        gap: 8px;
+    }
+    .search-bar input,
+    .search-bar select { flex: unset; width: 100%; }
+    .search-bar button { width: 100%; }
+
+    /* Article cards */
+    .article { padding: 16px 16px; }
+
+    /* Login / register */
+    .login_form {
+        margin: 24px 16px;
+        padding: 28px 22px;
+    }
+
+    /* Editor form */
+    .editor-form { padding: 18px 16px; }
+
+    /* Infobox — clear float */
+    .infobox {
+        float: none;
+        width: 100%;
+        margin: 0 0 16px 0;
+    }
+
+    /* Typography scale-down */
+    h1 { font-size: 1.45rem; }
+    h2 { font-size: 1.1rem; }
+}
+
+/* ─── Responsive — Phone (≤ 480px) ──────────────────────── */
+@media (max-width: 480px) {
+    .nav-brand  { font-size: 0.88rem; letter-spacing: 0.05em; }
+    .nav-links  { gap: 10px; }
+    .nav-links a { font-size: 0.76rem; }
+
+    h1 { font-size: 1.2rem; }
+
+    .article { padding: 14px 12px; }
+    .article h2 { font-size: 1rem; }
+
+    /* Comment form stacks on very small screens */
+    .comment-form { flex-direction: column; }
+    .comment-form button { width: 100%; }
+
+    /* Login form */
+    .login_form {
+        margin: 12px 10px;
+        padding: 22px 16px;
+    }
+
+    /* Editor article list — stack title and toggle vertically */
+    #articles-list .article {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,6 +1,20 @@
+/**
+ * bookmarks.js
+ * Bookmarks page controller for Extremity Vault.
+ * Loads the authenticated user's bookmarked articles and
+ * allows removal of individual bookmarks via AJAX.
+ *
+ * @author Barzin Vazifedoost
+ */
+
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
 
-// Session guard
+/**
+ * Verifies the user's session with the server.
+ * Redirects to login if the session is invalid.
+ *
+ * @param {Function|null} onSuccess - Callback invoked with session data on success.
+ */
 function checkSession(onSuccess) {
     fetch(`${BASE}/src/php/session_check.php`)
     .then(response => response.json())
@@ -28,6 +42,10 @@ document.getElementById('logout-btn').addEventListener('click', function (e) {
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
+/**
+ * Fetches the current user's bookmarks from the server and renders
+ * each article card with a Remove Bookmark button in #bookmarks-container.
+ */
 function loadBookmarks() {
     fetch(`${BASE}/src/php/get_bookmarks.php`)
     .then(response => response.json())
