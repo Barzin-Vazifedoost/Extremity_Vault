@@ -18,7 +18,39 @@ function checkSession(onSuccess) {
     .catch(() => { window.location.replace('../html/login.html'); });
 }
 
-checkSession(function() { loadArticles(); });
+const AUTOSAVE_KEY = 'ev_editor_draft';
+
+// Restore any saved draft on load
+checkSession(function() {
+    const saved = localStorage.getItem(AUTOSAVE_KEY);
+    if (saved) {
+        try {
+            const draft = JSON.parse(saved);
+            if (draft.title)       document.getElementById('title').value       = draft.title;
+            if (draft.category_id) document.getElementById('category_id').value = draft.category_id;
+            if (draft.content)     document.getElementById('content').value     = draft.content;
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = 'Draft restored.';
+            msgEl.className = 'success';
+        } catch (e) { /* ignore corrupt data */ }
+    }
+    loadArticles();
+});
+
+// Autosave on any field change
+(function () {
+    const fields = ['title', 'category_id', 'content'];
+    fields.forEach(function (id) {
+        document.getElementById(id).addEventListener('input', function () {
+            const draft = {
+                title:       document.getElementById('title').value,
+                category_id: document.getElementById('category_id').value,
+                content:     document.getElementById('content').value
+            };
+            localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draft));
+        });
+    });
+})();
 
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
@@ -49,6 +81,7 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
         if (data.success) {
             messageEl.innerText = 'Article saved as draft.';
             messageEl.className = 'success';
+            localStorage.removeItem(AUTOSAVE_KEY);
             document.getElementById('article_form').reset();
             loadArticles();
         } else {

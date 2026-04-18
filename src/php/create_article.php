@@ -8,6 +8,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['role'] !== 'admin') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Forbidden. Admin access required.']);
+    exit();
+}
+
 $data = json_decode(file_get_contents('php://input'), true);
 
 $title = filter_var($data['title'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);

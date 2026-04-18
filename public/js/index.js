@@ -43,6 +43,15 @@ document.getElementById('search-input').addEventListener('keydown', function (e)
     if (e.key === 'Enter') applyFilter();
 });
 
+// Live search — debounced, fires as the user types
+(function () {
+    let debounceTimer;
+    document.getElementById('search-input').addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(applyFilter, 300);
+    });
+})();
+
 // Sidebar category links
 document.querySelectorAll('#sidebar-categories a').forEach(link => {
     link.addEventListener('click', function (e) {

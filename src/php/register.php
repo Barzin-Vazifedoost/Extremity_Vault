@@ -4,9 +4,9 @@ header('Content-Type: application/json');
 require_once 'db.php';
 $data = json_decode(file_get_contents('php://input'), true);
 
-$name = $data['name'];
-$password = $data['password'];
-$email = $data['email'];
+$name     = $data['name']     ?? '';
+$password = $data['password'] ?? '';
+$email    = $data['email']    ?? '';
 
 $hash = password_hash($password, PASSWORD_BCRYPT);
 $name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
