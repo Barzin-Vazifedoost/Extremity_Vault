@@ -26,6 +26,7 @@ try {
         FROM bookmarks b
         JOIN articles a ON b.article_id = a.id
         WHERE b.user_id = ?
+        AND a.status = 'published'
         ORDER BY b.created_at DESC
     ");
     $stmt->execute([$user_id]);
