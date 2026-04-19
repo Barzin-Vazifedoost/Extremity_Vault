@@ -32,6 +32,8 @@ function loadArticles() {
 
         articles.forEach(article => {
             const date = new Date(article.created_at).toLocaleDateString();
+            const words = article.content.trim().split(/\s+/).length;
+            const mins  = Math.max(1, Math.ceil(words / 200));
             const div = document.createElement('div');
             div.className = 'article';
             // Create elements safely to prevent XSS
@@ -39,10 +41,15 @@ function loadArticles() {
             titleEl.textContent = article.title;
             const dateEl = document.createElement('small');
             dateEl.textContent = date;
+            const readEl = document.createElement('span');
+            readEl.className = 'reading-time';
+            readEl.textContent = `${mins} min read`;
             const contentEl = document.createElement('p');
             contentEl.textContent = article.content;
             
             div.innerHTML = `
+                ${article.image_url ? `<img class="article-image" src="${article.image_url}" alt="" loading="lazy">` : ''}
+                <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
                 <div class="comments-section">
                     <h3>Comments</h3>
                     <div class="comments-list" id="comments-list-${article.id}"></div>
@@ -56,10 +63,28 @@ function loadArticles() {
             
             // Insert safe elements
             div.insertBefore(contentEl, div.firstChild);
+            div.insertBefore(readEl, div.firstChild);
             div.insertBefore(dateEl, div.firstChild);
             div.insertBefore(titleEl, div.firstChild);
             container.appendChild(div);
             loadComments(article.id);
+        });
+
+        // Bookmark buttons
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const articleId = this.dataset.id;
+                fetch(`${BASE}/src/php/add_bookmark.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ article_id: articleId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.innerText = data.success ? 'Bookmarked ✦' : data.error;
+                    this.disabled = data.success;
+                });
+            });
         });
 
         document.querySelectorAll('.comment-form').forEach(form => {

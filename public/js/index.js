@@ -162,6 +162,8 @@ function renderArticles(articles) {
 
     articles.forEach(article => {
         const date = new Date(article.created_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+        const words = article.content.trim().split(/\s+/).length;
+        const mins  = Math.max(1, Math.ceil(words / 200));
         const div = document.createElement('div');
         div.className = 'article';
 
@@ -169,10 +171,14 @@ function renderArticles(articles) {
         titleEl.textContent = article.title;
         const dateEl = document.createElement('small');
         dateEl.textContent = `${article.category || 'Uncategorized'} — ${date}`;
+        const readEl = document.createElement('span');
+        readEl.className = 'reading-time';
+        readEl.textContent = `${mins} min read`;
         const contentEl = document.createElement('p');
         contentEl.textContent = article.content;
 
         div.innerHTML = `
+            ${article.image_url ? `<img class="article-image" src="${article.image_url}" alt="" loading="lazy">` : ''}
             <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
             <div class="comments-section">
                 <h3>Discussion</h3>
@@ -186,6 +192,7 @@ function renderArticles(articles) {
         `;
 
         div.insertBefore(contentEl, div.firstChild);
+        div.insertBefore(readEl, div.firstChild);
         div.insertBefore(dateEl, div.firstChild);
         div.insertBefore(titleEl, div.firstChild);
 

@@ -43,6 +43,7 @@ checkSession(function () {
             if (draft.title)       document.getElementById('title').value       = draft.title;
             if (draft.category_id) document.getElementById('category_id').value = draft.category_id;
             if (draft.content)     document.getElementById('content').value     = draft.content;
+            if (draft.image_url)   document.getElementById('image_url').value   = draft.image_url;
             showMessage('Draft restored.', 'success');
         } catch (e) { /* ignore corrupt data */ }
     }
@@ -51,12 +52,13 @@ checkSession(function () {
 
 // Autosave on any field change
 (function () {
-    ['title', 'category_id', 'content'].forEach(function (id) {
+    ['title', 'category_id', 'content', 'image_url'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', function () {
             const draft = {
                 title:       document.getElementById('title').value,
                 category_id: document.getElementById('category_id').value,
-                content:     document.getElementById('content').value
+                content:     document.getElementById('content').value,
+                image_url:   document.getElementById('image_url').value
             };
             localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draft));
         });
@@ -78,11 +80,12 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     const title       = document.getElementById('title').value;
     const category_id = document.getElementById('category_id').value;
     const content     = document.getElementById('content').value;
+    const image_url   = document.getElementById('image_url').value;
 
     fetch(`${BASE}/src/php/create_article.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, category_id, content })
+        body: JSON.stringify({ title, category_id, content, image_url })
     })
     .then(response => response.json())
     .then(function (data) {
