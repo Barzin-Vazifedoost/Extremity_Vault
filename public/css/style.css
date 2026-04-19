@@ -770,6 +770,30 @@ input[type="submit"]:hover {
     display: block;
 }
 
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Lora', serif;
+    font-size: 0.87rem;
+    font-style: italic;
+    color: var(--ink-muted);
+}
+.upload-label input[type="file"] {
+    font-family: 'Lora', serif;
+    font-size: 0.85rem;
+    color: var(--ink-body);
+    cursor: pointer;
+}
+
+#image_preview {
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-top: 4px;
+    border: 1px solid var(--border-md);
+}
+
 .bookmark-filter {
     display: flex;
     gap: 10px;
