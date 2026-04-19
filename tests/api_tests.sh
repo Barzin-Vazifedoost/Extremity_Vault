@@ -343,6 +343,32 @@ assert_json_field "7b. User session — role:user"       ".role"      "user" "$b
 body=$(curl -s -b "$COOKIE_ADMIN" "$BASE/session_check.php")
 assert_json_field "7c. Admin session — role:admin" ".role" "admin" "$body"
 
+# ── 8. SESSION FIXATION ─────────────────────────────────────
+echo ""
+echo "=== 8. Session Fixation ==="
+
+# 8a. Session ID must change on login (session_regenerate_id)
+COOKIE_FIXATION=$(mktemp)
+# Make an unauthenticated request to obtain a pre-login session ID
+curl -s -c "$COOKIE_FIXATION" "$BASE/session_check.php" > /dev/null
+pre_sid=$(grep -i "PHPSESSID" "$COOKIE_FIXATION" | awk '{print $NF}')
+
+# Now log in using that same cookie jar
+curl -s -b "$COOKIE_FIXATION" -c "$COOKIE_FIXATION" \
+  -X POST "$BASE/login.php" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"$USER_EMAIL\",\"password\":\"$USER_PASS\"}" > /dev/null
+post_sid=$(grep -i "PHPSESSID" "$COOKIE_FIXATION" | awk '{print $NF}')
+
+if [ -n "$pre_sid" ] && [ -n "$post_sid" ] && [ "$pre_sid" != "$post_sid" ]; then
+  green "8a. Session ID rotated on login (session fixation prevented)"
+  PASS=$((PASS+1))
+else
+  red "8a. Session ID did NOT change on login — session fixation possible"
+  FAIL=$((FAIL+1))
+fi
+rm -f "$COOKIE_FIXATION"
+
 # ── cleanup ─────────────────────────────────────────────────
 $MYSQL_CMD -e "DELETE FROM users WHERE email IN ('$ADMIN_EMAIL','$USER_EMAIL');" 2>/dev/null
 rm -f "$COOKIE_USER" "$COOKIE_ADMIN"
