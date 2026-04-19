@@ -304,6 +304,17 @@ body=$(curl -s -X POST "$BASE/remove_bookmark.php" \
   -d '{"article_id":1}')
 assert_json_field "5c. Remove bookmark no session — success:false" ".success" "false" "$body"
 
+# 5d. Duplicate bookmark — second add must fail
+body=$(curl -s -b "$COOKIE_USER" -X POST "$BASE/add_bookmark.php" \
+  -H "Content-Type: application/json" \
+  -d '{"article_id":1}')
+assert_json_field "5d. First bookmark — success:true" ".success" "true" "$body"
+body=$(curl -s -b "$COOKIE_USER" -X POST "$BASE/add_bookmark.php" \
+  -H "Content-Type: application/json" \
+  -d '{"article_id":1}')
+assert_json_field "5e. Duplicate bookmark — success:false" ".success" "false" "$body"
+$MYSQL_CMD -e "DELETE FROM bookmarks WHERE article_id=1;" 2>/dev/null
+
 # ── 6. COMMENTS ─────────────────────────────────────────────
 echo ""
 echo "=== 6. Comments ==="

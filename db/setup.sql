@@ -48,7 +48,8 @@ create table if not exists bookmarks(
     user_id int not null,
     article_id int not null,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_bookmark (user_id, article_id)
 );
 
 -- =====================
