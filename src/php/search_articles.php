@@ -1,16 +1,9 @@
 <?php
 /**
- * search_articles.php
+ * Ammar Khan
+ * March 2026
  * Returns published articles filtered by an optional search query and category.
- * Public endpoint — no authentication required.
- * Used by the main Vault page for live client-side-assisted search.
- *
- * @author Barzin Vazifedoost
- *
- * @param string q           Optional GET param. Substring matched against title or content.
- * @param int    category_id Optional GET param. Filters results to a specific category.
- *
- * @return JSON Array of matching article objects, or {success: false, error: string} on failure.
+ * Public endpoint used by the main Vault page for live search.
  */
 header('Content-Type: application/json');
 require_once 'db.php';

@@ -1,10 +1,9 @@
 /**
- * login.js
+ * Barzin Vazifedoost
+ * March 2026
  * Login form controller for Extremity Vault.
- * Submits credentials to login.php via AJAX (fetch) and redirects
- * to the main vault on success, or displays an error message on failure.
- *
- * @author Barzin Vazifedoost
+ * Submits credentials via AJAX and redirects to the vault on success,
+ * or displays an inline error message on failure.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';

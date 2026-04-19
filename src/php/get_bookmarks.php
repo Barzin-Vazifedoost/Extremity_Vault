@@ -1,13 +1,9 @@
 <?php
 /**
- * get_bookmarks.php
+ * Anika Agnihotri
+ * March 2026
  * Returns all articles bookmarked by the authenticated user.
- * Joins the bookmarks table with articles to return full article data.
- * Results are ordered newest bookmark first.
- *
- * @author Barzin Vazifedoost
- *
- * @return JSON {success: bool, bookmarks?: array, error?: string}
+ * Joins bookmarks with articles and categories, ordered newest first.
  */
 session_start();
 header('Content-Type: application/json');

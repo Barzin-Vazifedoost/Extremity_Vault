@@ -1,3 +1,8 @@
+-- setup.sql
+-- Ammar Khan
+-- March 2026
+-- Database schema and seed data for Extremity Vault. Defines tables for users, categories, articles, comments, and bookmarks.
+
 Create table if not exists users(
     id int primary key auto_increment,
     name varchar(255) not null,
@@ -52,21 +57,14 @@ create table if not exists bookmarks(
     UNIQUE KEY unique_bookmark (user_id, article_id)
 );
 
--- =====================
--- SEED DATA
--- =====================
-
--- Categories
 INSERT IGNORE INTO categories (id, name) VALUES
 (1, 'Characters'),
 (2, 'Settings'),
 (3, 'Items');
 
--- Admin user (password: admin123)
 INSERT IGNORE INTO users (id, name, email, password, role) VALUES
 (1, 'Admin', 'admin@extremityvault.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
 
--- Sample published articles
 INSERT IGNORE INTO articles (id, user_id, category_id, title, content, status) VALUES
 (1, 1, 1, 'The Warden of the Frost Gate', 'An ancient guardian bound by oath to the northern pass, the Warden has stood vigil for three centuries. Neither fully alive nor truly dead, it judges all who seek entry into the frozen realm beyond.', 'published'),
 (2, 1, 2, 'The Shattered Expanse', 'A vast broken plateau where gravity behaves unpredictably. Chunks of earth float at impossible angles, connected by rope bridges that sway in winds that carry whispered secrets from civilizations long gone.', 'published'),

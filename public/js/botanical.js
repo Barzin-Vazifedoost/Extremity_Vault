@@ -1,11 +1,8 @@
 /**
- * botanical.js
+ * Barzin Vazifedoost
+ * March 2026
  * Ambient botanical particle animation for Extremity Vault.
- * Creates a fixed, full-screen canvas behind all content and animates
- * drifting pollen grains and flower petals in the site's hyacinth palette.
- * Uses requestAnimationFrame for smooth, CPU-efficient rendering.
- *
- * @author Barzin Vazifedoost
+ * Animates drifting pollen grains and petals on a fixed canvas using requestAnimationFrame.
  */
 
 // Botanical Particles — drifting pollen & petals
@@ -28,13 +25,12 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Hyacinth-palette colours
     const palette = [
-        'rgba(197, 184, 212, {a})',   // lilac
-        'rgba(168, 158, 208, {a})',   // lavender
-        'rgba(123, 110, 168, {a})',   // hyacinth
-        'rgba(180, 196, 168, {a})',   // sage
-        'rgba(212, 200, 232, {a})',   // soft violet
+        'rgba(197, 184, 212, {a})',   
+        'rgba(168, 158, 208, {a})',  
+        'rgba(123, 110, 168, {a})',  
+        'rgba(180, 196, 168, {a})',   
+        'rgba(212, 200, 232, {a})',   
     ];
 
     function randColor(opacity) {
@@ -59,7 +55,6 @@
         };
     }
 
-    // Seed initial particles spread across the screen
     const COUNT = 22;
     const particles = Array.from({ length: COUNT }, make);
 
@@ -71,12 +66,10 @@
         ctx.fillStyle   = randColor(p.opacity);
 
         if (p.isPetal) {
-            // Elliptical petal
             ctx.beginPath();
             ctx.ellipse(0, 0, p.w * 0.55, p.h * 0.9, 0, 0, Math.PI * 2);
             ctx.fill();
         } else {
-            // Tiny dot — pollen grain
             ctx.beginPath();
             ctx.arc(0, 0, p.w * 0.45, 0, Math.PI * 2);
             ctx.fill();
@@ -95,7 +88,6 @@
 
             drawPetal(p);
 
-            // Recycle when off-screen
             if (p.y > canvas.height + 12 || p.x < -12 || p.x > canvas.width + 12) {
                 particles[i] = make();
                 particles[i].y = -10;
@@ -108,7 +100,6 @@
     tick();
 })();
 
-// ── Back to Top button ───────────────────────────────────────────────────────
 (function () {
     document.addEventListener('DOMContentLoaded', function () {
         const btn = document.getElementById('back-to-top');

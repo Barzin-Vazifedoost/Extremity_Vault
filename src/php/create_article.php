@@ -1,18 +1,8 @@
 <?php
 /**
- * create_article.php
- * Creates a new article as a draft (admin only).
- * Accepts JSON POST body with 'title', 'category_id', and 'content'.
- * Requires an active admin session; returns HTTP 403 for non-admins.
- * All inputs are sanitized and inserted via PDO prepared statements.
- *
- * @author Barzin Vazifedoost
- *
- * @param string title       Article title.
- * @param int    category_id Foreign key referencing the categories table.
- * @param string content     Article body text.
- *
- * @return JSON {success: bool, message?: string, error?: string}
+ * Erin Sobers
+ * March 2026
+ * Creates a new draft article (admin only). Accepts a JSON POST body, sanitizes all inputs, and inserts via prepared statements.
  */
 session_start();
 header('Content-Type: application/json');

@@ -1,15 +1,9 @@
 <?php
 /**
- * delete_article.php
+ * Erin Sobers
+ * March 2026
  * Permanently deletes a draft article (admin only).
- * Only articles with status 'draft' may be deleted; published articles
- * must be unpublished first to prevent accidental loss of live content.
- *
- * @author Barzin Vazifedoost
- *
- * @param int article_id ID of the draft article to delete.
- *
- * @return JSON {success: bool, message?: string, error?: string}
+ * Published articles must be unpublished first to prevent accidental content loss.
  */
 session_start();
 header('Content-Type: application/json');

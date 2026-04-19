@@ -1,18 +1,9 @@
 <?php
 /**
- * register.php
+ * Barzin Vazifedoost
+ * March 2026
  * Registers a new user account.
- * Accepts JSON POST body with 'name', 'email', and 'password' fields.
- * Validates the email format, hashes the password with bcrypt,
- * and inserts the new user row. Rejects duplicate email addresses.
- *
- * @author Barzin Vazifedoost
- *
- * @param string name     Display name for the new user.
- * @param string email    Email address (must be unique, validated).
- * @param string password Plain-text password (hashed with PASSWORD_BCRYPT).
- *
- * @return JSON {success: bool, message?: string, error?: string}
+ * Validates email, hashes the password with bcrypt, and rejects duplicate emails.
  */
 header('Content-Type: application/json');
 

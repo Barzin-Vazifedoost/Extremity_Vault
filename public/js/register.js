@@ -1,10 +1,9 @@
 /**
- * register.js
+ * Barzin Vazifedoost
+ * March 2026
  * Registration form controller for Extremity Vault.
- * Submits name, email, and password to register.php via AJAX (fetch),
- * then redirects to login on success or displays an inline error.
- *
- * @author Barzin Vazifedoost
+ * Submits name, email, and password via AJAX and redirects to login on success,
+ * or displays an inline error message on failure.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';

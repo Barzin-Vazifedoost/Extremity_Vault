@@ -1,10 +1,8 @@
 /**
- * bookmarks.js
+ * Anika Agnihotri
+ * March 2026
  * Bookmarks page controller for Extremity Vault.
- * Loads the authenticated user's bookmarked articles and
- * allows removal of individual bookmarks via AJAX.
- *
- * @author Barzin Vazifedoost
+ * Loads the authenticated user's saved articles and allows AJAX bookmark removal.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
@@ -45,8 +43,6 @@ document.getElementById('logout-btn').addEventListener('click', function (e) {
 document.getElementById('category-filter').addEventListener('change', function () {
     renderBookmarks(allBookmarks, this.value);
 });
-
-/** All bookmarks fetched from server, kept for client-side filtering. */
 let allBookmarks = [];
 
 /**

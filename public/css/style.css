@@ -1,10 +1,12 @@
-/* ============================================================
-   EXTREMITY VAULT — BOTANICAL MANUSCRIPT THEME
-   ============================================================ */
+/* style.css
+   Barzin Vazifedoost, Erin Sobers, Ammar Khan, Anika Agnihotri
+   March 2026
+   Main stylesheet for Extremity Vault — Botanical Manuscript Theme.
+   Covers layout, typography, components, animations, and responsive breakpoints.
+*/
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&family=IM+Fell+English:ital@0;1&display=swap');
 
-/* ─── Custom Properties ─────────────────────────────────── */
 :root {
     --parchment:        #f4ede0;
     --parchment-alt:    #ede5d2;
@@ -27,10 +29,8 @@
     --ease:             0.38s ease;
 }
 
-/* ─── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── Body — Parchment ───────────────────────────────────── */
 body {
     font-family: 'Lora', Georgia, serif;
     font-size: 15px;
@@ -44,7 +44,6 @@ body {
     min-height: 100vh;
 }
 
-/* ─── Typography ─────────────────────────────────────────── */
 h1, h2, h3, h4 {
     font-family: 'Cinzel', 'Times New Roman', serif;
     color: var(--hyacinth-dk);
@@ -71,7 +70,6 @@ small {
     font-size: 0.8rem;
 }
 
-/* ─── Navbar ─────────────────────────────────────────────── */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -123,13 +121,11 @@ small {
     border-bottom-color: var(--hyacinth-lt);
 }
 
-/* ─── Page Layout ────────────────────────────────────────── */
 .page-layout {
     display: flex;
     min-height: calc(100vh - 50px);
 }
 
-/* ─── Sidebar ────────────────────────────────────────────── */
 .sidebar {
     width: 220px;
     flex-shrink: 0;
@@ -190,7 +186,6 @@ small {
     margin: 14px 0;
 }
 
-/* ─── Main Content ───────────────────────────────────────── */
 .main-content {
     flex: 1;
     padding: 32px 40px;
@@ -203,7 +198,6 @@ small {
     padding: 32px 40px;
 }
 
-/* ─── Search Bar ─────────────────────────────────────────── */
 .search-bar {
     display: flex;
     gap: 8px;
@@ -250,7 +244,6 @@ small {
     transform: translateY(-1px);
 }
 
-/* ─── Vine Divider ───────────────────────────────────────── */
 .vine-divider,
 .comments-section::before {
     content: '';
@@ -262,7 +255,6 @@ small {
     margin: 18px 0;
 }
 
-/* ─── Article Cards ──────────────────────────────────────── */
 .article {
     background: linear-gradient(135deg, #faf7f2 0%, #f5f0e5 100%);
     border: 1px solid var(--border);
@@ -309,7 +301,6 @@ small {
     line-height: 1.82;
 }
 
-/* ─── Bookmark Buttons ───────────────────────────────────── */
 .bookmark-btn {
     margin-top: 14px;
     padding: 6px 16px;
@@ -355,7 +346,6 @@ small {
     border-color: rgba(154, 96, 96, 0.5);
 }
 
-/* ─── Comments ───────────────────────────────────────────── */
 .comments-section {
     margin-top: 20px;
     padding-top: 4px;
@@ -442,7 +432,6 @@ small {
     font-style: italic;
 }
 
-/* ─── Login / Register Forms ─────────────────────────────── */
 .login_form {
     max-width: 420px;
     margin: 60px auto;
@@ -496,7 +485,6 @@ small {
     color: var(--ink-muted);
 }
 
-/* ─── Global Inputs ──────────────────────────────────────── */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -542,7 +530,6 @@ input[type="submit"]:hover {
     transform: translateY(-1px);
 }
 
-/* ─── Feedback Messages ──────────────────────────────────── */
 #message {
     margin-top: 6px;
     padding: 9px 14px;
@@ -557,7 +544,6 @@ input[type="submit"]:hover {
 #message.error   { background: rgba(154, 74, 74, 0.09); color: #7a3838; border: 1px solid rgba(154,74,74,0.25); }
 #message.success { background: rgba(122, 140, 110, 0.1); color: #3a5a30; border: 1px solid rgba(122,140,110,0.28); }
 
-/* ─── Editor Form ────────────────────────────────────────── */
 .editor-form {
     background: linear-gradient(145deg, #faf7f2, #f0ead8);
     padding: 28px 30px;
@@ -577,7 +563,6 @@ input[type="submit"]:hover {
     resize: vertical;
 }
 
-/* ─── Editor Article List ────────────────────────────────── */
 #articles-list .article {
     display: flex;
     align-items: center;
@@ -621,7 +606,6 @@ input[type="submit"]:hover {
     color: white;
 }
 
-/* ─── Infobox — Specimen Card ────────────────────────────── */
 .infobox {
     float: right;
     width: 195px;
@@ -665,13 +649,11 @@ input[type="submit"]:hover {
     font-size: 0.82rem;
 }
 
-/* ─── Animations ─────────────────────────────────────────── */
 @keyframes fadeBloom {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Journal Page ───────────────────────────────────────── */
 .journal-intro {
     font-size: 0.95rem;
     color: var(--ink-muted);
@@ -736,13 +718,11 @@ input[type="submit"]:hover {
     color: var(--hyacinth);
 }
 
-/* ─── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 7px; }
 ::-webkit-scrollbar-track { background: var(--parchment-alt); }
 ::-webkit-scrollbar-thumb { background: var(--hyacinth-lt); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--hyacinth); }
 
-/* ─── Back to Top ────────────────────────────────────────── */
 .back-to-top {
     position: fixed;
     bottom: 28px;
@@ -767,7 +747,6 @@ input[type="submit"]:hover {
 }
 .back-to-top:hover { transform: translateY(-3px); }
 
-/* ─── Reading Time ───────────────────────────────────────── */
 .reading-time {
     display: inline-block;
     font-size: 0.74rem;
@@ -782,7 +761,6 @@ input[type="submit"]:hover {
     vertical-align: middle;
 }
 
-/* ─── Article Image ──────────────────────────────────────── */
 .article-image {
     width: 100%;
     max-height: 320px;
@@ -792,7 +770,6 @@ input[type="submit"]:hover {
     display: block;
 }
 
-/* ─── Bookmark filter bar ────────────────────────────────── */
 .bookmark-filter {
     display: flex;
     gap: 10px;
@@ -810,7 +787,6 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
-/* ─── Mobile Hamburger Button ────────────────────────────── */
 .sidebar-toggle {
     display: none;
     background: none;
@@ -827,7 +803,6 @@ input[type="submit"]:hover {
     background: rgba(123, 110, 168, 0.1);
 }
 
-/* ─── Sidebar Backdrop (mobile overlay) ─────────────────── */
 .sidebar-backdrop {
     display: none;
     position: fixed;
@@ -837,10 +812,8 @@ input[type="submit"]:hover {
 }
 .sidebar-backdrop.visible { display: block; }
 
-/* ─── Responsive — Tablet (≤ 768px) ─────────────────────── */
 @media (max-width: 768px) {
 
-    /* Navbar */
     .navbar {
         padding: 10px 16px;
         gap: 8px;
@@ -850,13 +823,10 @@ input[type="submit"]:hover {
     .nav-links  { gap: 14px; }
     .nav-links a { font-size: 0.82rem; }
 
-    /* Show hamburger */
     .sidebar-toggle { display: block; }
 
-    /* Stack layout */
     .page-layout { flex-direction: column; }
 
-    /* Off-canvas sidebar */
     .sidebar {
         position: fixed;
         top: 0;
@@ -873,11 +843,9 @@ input[type="submit"]:hover {
     .sidebar.open { left: 0; }
     .sidebar::after { display: none; }
 
-    /* Main content — full width */
     .main-content { padding: 20px 16px; width: 100%; }
     .container    { padding: 20px 16px; }
 
-    /* Search bar stacks vertically */
     .search-bar {
         flex-direction: column;
         padding: 10px 12px;
@@ -887,31 +855,25 @@ input[type="submit"]:hover {
     .search-bar select { flex: unset; width: 100%; }
     .search-bar button { width: 100%; }
 
-    /* Article cards */
     .article { padding: 16px 16px; }
 
-    /* Login / register */
     .login_form {
         margin: 24px 16px;
         padding: 28px 22px;
     }
 
-    /* Editor form */
     .editor-form { padding: 18px 16px; }
 
-    /* Infobox — clear float */
     .infobox {
         float: none;
         width: 100%;
         margin: 0 0 16px 0;
     }
 
-    /* Typography scale-down */
     h1 { font-size: 1.45rem; }
     h2 { font-size: 1.1rem; }
 }
 
-/* ─── Responsive — Phone (≤ 480px) ──────────────────────── */
 @media (max-width: 480px) {
     .nav-brand  { font-size: 0.88rem; letter-spacing: 0.05em; }
     .nav-links  { gap: 10px; }
@@ -922,17 +884,14 @@ input[type="submit"]:hover {
     .article { padding: 14px 12px; }
     .article h2 { font-size: 1rem; }
 
-    /* Comment form stacks on very small screens */
     .comment-form { flex-direction: column; }
     .comment-form button { width: 100%; }
 
-    /* Login form */
     .login_form {
         margin: 12px 10px;
         padding: 22px 16px;
     }
 
-    /* Editor article list — stack title and toggle vertically */
     #articles-list .article {
         flex-direction: column;
         align-items: flex-start;

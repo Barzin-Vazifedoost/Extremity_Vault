@@ -1,13 +1,9 @@
 <?php
 /**
- * get_all_articles.php
+ * Erin Sobers
+ * March 2026
  * Returns all articles regardless of status (admin only).
- * Used by the Editor page to list every article with its publish state.
- * Requires an active admin session.
- *
- * @author Barzin Vazifedoost
- *
- * @return JSON {success: bool, articles?: array, error?: string}
+ * Used by the Editor page to list every article with its current publish state.
  */
 session_start();
 header('Content-Type: application/json');

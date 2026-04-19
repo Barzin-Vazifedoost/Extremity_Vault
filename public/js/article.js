@@ -1,10 +1,8 @@
 /**
- * article.js
+ * Ammar Khan
+ * March 2026
  * Archive page controller for Extremity Vault.
- * Fetches all published articles and renders them with AJAX comment
- * loading and posting. No authentication required (public archive).
- *
- * @author Barzin Vazifedoost
+ * Fetches all published articles and renders them with AJAX comment loading and posting.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
@@ -36,7 +34,6 @@ function loadArticles() {
             const mins  = Math.max(1, Math.ceil(words / 200));
             const div = document.createElement('div');
             div.className = 'article';
-            // Create elements safely to prevent XSS
             const titleEl = document.createElement('h2');
             titleEl.textContent = article.title;
             const dateEl = document.createElement('small');
@@ -61,7 +58,6 @@ function loadArticles() {
                 </div>
             `;
             
-            // Insert safe elements
             div.insertBefore(contentEl, div.firstChild);
             div.insertBefore(readEl, div.firstChild);
             div.insertBefore(dateEl, div.firstChild);
@@ -70,7 +66,6 @@ function loadArticles() {
             loadComments(article.id);
         });
 
-        // Bookmark buttons
         document.querySelectorAll('.bookmark-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
@@ -87,7 +82,6 @@ function loadArticles() {
             });
         });
 
-        // Restore bookmark state from server (so refresh keeps buttons marked)
         fetch(`${BASE}/src/php/get_bookmarks.php`)
             .then(r => r.json())
             .then(data => {
@@ -100,7 +94,7 @@ function loadArticles() {
                     }
                 });
             })
-            .catch(() => {}); // not logged in — silently skip
+            .catch(() => {});
 
         document.querySelectorAll('.comment-form').forEach(form => {
             form.addEventListener('submit', function (e) {
@@ -163,6 +157,4 @@ function loadComments(articleId) {
     });
 }
 
-// Entry point — runs after the DOM is ready
 document.addEventListener('DOMContentLoaded', loadArticles);
-

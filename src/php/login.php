@@ -1,17 +1,8 @@
 <?php
 /**
- * login.php
- * Authenticates a user against the database.
- * Accepts JSON POST body with 'email' and 'password' fields.
- * Validates email format, verifies bcrypt password hash,
- * and writes user data into the PHP session on success.
- *
- * @author Barzin Vazifedoost
- *
- * @param string email    User's email address (validated with FILTER_VALIDATE_EMAIL).
- * @param string password Plain-text password (verified with password_verify).
- *
- * @return JSON {success: bool, message?: string, error?: string}
+ * Barzin Vazifedoost
+ * March 2026
+ * Authenticates a user against the database. Validates email format, verifies bcrypt hash, and writes user data to session.
  */
 session_start();
 header('Content-Type: application/json');

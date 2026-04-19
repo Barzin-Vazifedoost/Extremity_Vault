@@ -1,12 +1,10 @@
 <?php
 /**
- * db.php
+ * Barzin Vazifedoost
+ * March 2026
  * Database connection module for Extremity Vault.
- * Creates a PDO instance using environment-aware credentials
- * (localhost vs. cs1xd3 production). Sets error mode to EXCEPTION
- * and default fetch mode to ASSOC. All other PHP scripts require this file.
- *
- * @author Barzin Vazifedoost
+ * Creates a PDO instance with environment-aware credentials, sets error mode
+ * to EXCEPTION and default fetch mode to ASSOC. Required by all PHP scripts.
  */
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
     $host     = 'localhost';

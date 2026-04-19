@@ -1,13 +1,9 @@
 <?php
 /**
- * get_articles.php
+ * Ammar Khan
+ * March 2026
  * Returns all published articles as a JSON array.
- * Public endpoint — no authentication required.
- * Used by the Archive page to display the public article list.
- *
- * @author Barzin Vazifedoost
- *
- * @return JSON Array of article objects, or {success: false, error: string} on failure.
+ * Public endpoint, no authentication required. Used by the Archive page.
  */
 header('Content-Type: application/json');
 require_once 'db.php';

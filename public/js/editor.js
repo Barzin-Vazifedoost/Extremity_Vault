@@ -1,14 +1,11 @@
 /**
- * editor.js
- * Unified admin editor: create articles, publish/unpublish, and delete drafts.
- * Autosaves the create form to localStorage to prevent accidental data loss.
- *
- * @author Barzin Vazifedoost
+ * Erin Sobers
+ * March 2026
+ * Admin editor controller for Extremity Vault.
+ * Handles article creation, publish/unpublish toggling, draft deletion, and autosave.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
-
-/** localStorage key used to persist unsaved draft content. */
 const AUTOSAVE_KEY = 'ev_editor_draft';
 
 /**
@@ -34,7 +31,6 @@ function checkSession(onSuccess) {
     .catch(() => { window.location.replace('../html/login.html'); });
 }
 
-// Restore any saved draft on load
 checkSession(function () {
     const saved = localStorage.getItem(AUTOSAVE_KEY);
     if (saved) {
@@ -45,12 +41,11 @@ checkSession(function () {
             if (draft.content)     document.getElementById('content').value     = draft.content;
             if (draft.image_url)   document.getElementById('image_url').value   = draft.image_url;
             showMessage('Draft restored.', 'success');
-        } catch (e) { /* ignore corrupt data */ }
+        } catch (e) {  }
     }
     loadArticles();
 });
 
-// Autosave on any field change
 (function () {
     ['title', 'category_id', 'content', 'image_url'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', function () {
@@ -154,7 +149,6 @@ function loadArticles() {
             list.appendChild(div);
         });
 
-        // Publish / Unpublish
         document.querySelectorAll('.toggle-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 const articleId = this.dataset.id;
@@ -172,7 +166,6 @@ function loadArticles() {
             });
         });
 
-        // Delete draft
         document.querySelectorAll('.delete-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 if (!confirm('Permanently delete this draft?')) return;

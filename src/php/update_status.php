@@ -1,16 +1,9 @@
 <?php
 /**
- * update_status.php
+ * Erin Sobers
+ * March 2026
  * Toggles an article's status between 'draft' and 'published' (admin only).
- * Accepts JSON POST body with 'article_id' and 'status'.
- * Validates that status is one of the allowed ENUM values before updating.
- *
- * @author Barzin Vazifedoost
- *
- * @param int    article_id ID of the article to update.
- * @param string status     New status: 'draft' or 'published'.
- *
- * @return JSON {success: bool, message?: string, error?: string}
+ * Validates that the provided status matches an allowed ENUM value before updating.
  */
 session_start();
 header('Content-Type: application/json');

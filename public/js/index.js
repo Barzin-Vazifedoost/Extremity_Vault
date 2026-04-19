@@ -1,15 +1,12 @@
 /**
- * index.js
+ * Ammar Khan
+ * March 2026
  * Main page controller for Extremity Vault.
- * Handles session verification, live article search with debounce,
- * client-side filtering by category, bookmark creation (AJAX),
- * and comment loading/posting (AJAX).
- *
- * @author Barzin Vazifedoost
+ * Handles session checks, debounced live search, category filtering,
+ * AJAX bookmark creation, and AJAX comment loading and posting.
  */
 
 const BASE = window.location.hostname === 'localhost' ? '/Extremity_Vault' : '/~vazifedb/Extremity_Vault';
-
 let allArticles = [];
 
 /**
@@ -50,15 +47,11 @@ document.getElementById('logout-btn').addEventListener('click', function (e) {
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
-// Search button
 document.getElementById('search-btn').addEventListener('click', applyFilter);
-
-// Enter key in search
 document.getElementById('search-input').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') applyFilter();
 });
 
-// Live search — debounced, fires as the user types
 (function () {
     let debounceTimer;
     document.getElementById('search-input').addEventListener('input', function () {
@@ -67,7 +60,6 @@ document.getElementById('search-input').addEventListener('keydown', function (e)
     });
 })();
 
-// Sidebar category links
 document.querySelectorAll('#sidebar-categories a').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -79,7 +71,6 @@ document.querySelectorAll('#sidebar-categories a').forEach(link => {
     });
 });
 
-// ── Mobile sidebar toggle ─────────────────────────────────────────────────
 (function () {
     const toggle   = document.getElementById('sidebar-toggle');
     const sidebar  = document.querySelector('.sidebar');
@@ -105,7 +96,6 @@ document.querySelectorAll('#sidebar-categories a').forEach(link => {
     });
     backdrop.addEventListener('click', closeSidebar);
 
-    // Auto-close when a category is tapped
     document.querySelectorAll('#sidebar-categories a').forEach(function (a) {
         a.addEventListener('click', closeSidebar);
     });
@@ -200,7 +190,6 @@ function renderArticles(articles) {
         loadComments(article.id);
     });
 
-    // Bookmark buttons
     document.querySelectorAll('.bookmark-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             const articleId = this.dataset.id;
@@ -217,7 +206,6 @@ function renderArticles(articles) {
         });
     });
 
-    // Comment forms
     document.querySelectorAll('.comment-form').forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();

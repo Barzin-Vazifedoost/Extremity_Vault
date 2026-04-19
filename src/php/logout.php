@@ -1,12 +1,8 @@
 <?php
 /**
- * logout.php
- * Destroys the current user session and clears the session cookie.
- * Safe to call via AJAX — returns JSON confirmation.
- *
- * @author Barzin Vazifedoost
- *
- * @return JSON {success: true}
+ * Barzin Vazifedoost
+ * March 2026
+ * Destroys the current user session and clears the session cookie. Safe to call via AJAX, returns JSON confirmation.
  */
 session_start();
 $_SESSION = [];
