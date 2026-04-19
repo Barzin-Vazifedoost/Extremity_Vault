@@ -457,6 +457,25 @@ small {
 .login_form::before { content: '✦'; position: absolute; top: 15px; left: 18px;  font-size: 11px; color: var(--hyacinth-lt); opacity: 0.55; }
 .login_form::after  { content: '✦'; position: absolute; top: 15px; right: 18px; font-size: 11px; color: var(--hyacinth-lt); opacity: 0.55; }
 
+.login-brand {
+    text-align: center;
+    margin-bottom: 14px;
+}
+.login-brand-mark {
+    display: block;
+    font-size: 1.8rem;
+    color: var(--hyacinth-dk);
+    margin-bottom: 4px;
+    line-height: 1;
+}
+.login-brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--hyacinth-dk);
+    letter-spacing: 0.14em;
+}
+
 .login_form h2 {
     font-family: 'Cinzel', serif;
     text-align: center;

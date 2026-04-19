@@ -87,6 +87,21 @@ function loadArticles() {
             });
         });
 
+        // Restore bookmark state from server (so refresh keeps buttons marked)
+        fetch(`${BASE}/src/php/get_bookmarks.php`)
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) return;
+                const bookmarkedIds = new Set(data.bookmarks.map(b => String(b.id)));
+                document.querySelectorAll('.bookmark-btn').forEach(btn => {
+                    if (bookmarkedIds.has(btn.dataset.id)) {
+                        btn.textContent = 'Bookmarked ✦';
+                        btn.disabled = true;
+                    }
+                });
+            })
+            .catch(() => {}); // not logged in — silently skip
+
         document.querySelectorAll('.comment-form').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
