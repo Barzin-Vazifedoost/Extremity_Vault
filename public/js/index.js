@@ -32,6 +32,8 @@ checkSession(function(data) {
     if (data.role === 'admin') {
         document.getElementById('sidebar-admin').style.display = 'block';
     }
+    const navUser = document.getElementById('nav-user');
+    if (navUser && data.name) navUser.textContent = data.name;
     fetchAllArticles();
 });
 

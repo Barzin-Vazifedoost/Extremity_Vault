@@ -26,7 +26,11 @@ function checkSession(onSuccess) {
     .catch(() => { window.location.replace('../html/login.html'); });
 }
 
-checkSession(function() { loadBookmarks(); });
+checkSession(function(data) {
+    const navUser = document.getElementById('nav-user');
+    if (navUser && data.name) navUser.textContent = data.name;
+    loadBookmarks();
+});
 
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {

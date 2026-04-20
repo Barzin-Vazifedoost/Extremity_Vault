@@ -31,7 +31,9 @@ function checkSession(onSuccess) {
     .catch(() => { window.location.replace('../html/login.html'); });
 }
 
-checkSession(function () {
+checkSession(function (data) {
+    const navUser = document.getElementById('nav-user');
+    if (navUser && data.name) navUser.textContent = data.name;
     const saved = localStorage.getItem(AUTOSAVE_KEY);
     if (saved) {
         try {

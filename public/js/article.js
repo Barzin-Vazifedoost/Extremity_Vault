@@ -13,6 +13,15 @@ document.getElementById('logout-btn').addEventListener('click', function (e) {
     .then(() => { window.location.href = '../html/login.html'; });
 });
 
+// Show logged-in user name in navbar (best-effort, public page)
+fetch(`${BASE}/src/php/session_check.php`)
+    .then(r => r.json())
+    .then(function(data) {
+        const navUser = document.getElementById('nav-user');
+        if (navUser && data.logged_in && data.name) navUser.textContent = data.name;
+    })
+    .catch(function() {});
+
 /**
  * Fetches all published articles and renders each one with a comment
  * section. Attaches AJAX submit listeners to every comment form.
