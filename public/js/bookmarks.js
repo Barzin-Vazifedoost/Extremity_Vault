@@ -29,6 +29,7 @@ function checkSession(onSuccess) {
 checkSession(function(data) {
     const navUser = document.getElementById('nav-user');
     if (navUser && data.name) navUser.textContent = data.name;
+    populateCategories();
     loadBookmarks();
 });
 
@@ -48,6 +49,25 @@ document.getElementById('category-filter').addEventListener('change', function (
     renderBookmarks(allBookmarks, this.value);
 });
 let allBookmarks = [];
+
+/**
+ * Fetches all categories from the server and populates the
+ * #category-filter dropdown, preserving the default "All Categories" option.
+ */
+function populateCategories() {
+    fetch(`${BASE}/src/php/get_categories.php`)
+    .then(r => r.json())
+    .then(function(categories) {
+        const select = document.getElementById('category-filter');
+        categories.forEach(function(cat) {
+            const opt = document.createElement('option');
+            opt.value = cat.id;
+            opt.textContent = cat.name;
+            select.appendChild(opt);
+        });
+    })
+    .catch(function() {});
+}
 
 /**
  * Fetches the current user's bookmarks from the server and renders
