@@ -45,18 +45,6 @@ checkSession(function () {
     loadArticles();
 });
 
-// Show a local preview when the user picks an image file
-document.getElementById('image_file').addEventListener('change', function () {
-    const preview = document.getElementById('image_preview');
-    if (this.files && this.files[0]) {
-        preview.src = URL.createObjectURL(this.files[0]);
-        preview.style.display = 'block';
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-});
-
 (function () {
     ['title', 'category_id', 'content'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', function () {
@@ -85,45 +73,24 @@ document.getElementById('article_form').addEventListener('submit', function (e) 
     const title       = document.getElementById('title').value;
     const category_id = document.getElementById('category_id').value;
     const content     = document.getElementById('content').value;
-    const fileInput   = document.getElementById('image_file');
 
-    function saveArticle(image_url) {
-        fetch(`${BASE}/src/php/create_article.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, category_id, content, image_url })
-        })
-        .then(r => r.json())
-        .then(function (data) {
-            if (data.success) {
-                showMessage('Article saved as draft.', 'success');
-                localStorage.removeItem(AUTOSAVE_KEY);
-                document.getElementById('article_form').reset();
-                document.getElementById('image_preview').style.display = 'none';
-                loadArticles();
-            } else {
-                showMessage(data.error, 'error');
-            }
-        })
-        .catch(function () { showMessage('Server error. Try again.', 'error'); });
-    }
-
-    if (fileInput.files && fileInput.files[0]) {
-        const formData = new FormData();
-        formData.append('image', fileInput.files[0]);
-        fetch(`${BASE}/src/php/upload_image.php`, { method: 'POST', body: formData })
-            .then(r => r.json())
-            .then(function (data) {
-                if (data.success) {
-                    saveArticle(data.url);
-                } else {
-                    showMessage(data.error || 'Image upload failed.', 'error');
-                }
-            })
-            .catch(function () { showMessage('Image upload failed.', 'error'); });
-    } else {
-        saveArticle(null);
-    }
+    fetch(`${BASE}/src/php/create_article.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, category_id, content })
+    })
+    .then(r => r.json())
+    .then(function (data) {
+        if (data.success) {
+            showMessage('Article saved as draft.', 'success');
+            localStorage.removeItem(AUTOSAVE_KEY);
+            document.getElementById('article_form').reset();
+            loadArticles();
+        } else {
+            showMessage(data.error, 'error');
+        }
+    })
+    .catch(function () { showMessage('Server error. Try again.', 'error'); });
 });
 
 /**
