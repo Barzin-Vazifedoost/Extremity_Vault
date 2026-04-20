@@ -170,7 +170,6 @@ function renderArticles(articles) {
         contentEl.textContent = article.content;
 
         div.innerHTML = `
-            ${article.image_url ? `<img class="article-image" src="${article.image_url}" alt="" loading="lazy">` : ''}
             <button class="bookmark-btn" data-id="${article.id}">Bookmark</button>
             <div class="comments-section">
                 <h3>Discussion</h3>

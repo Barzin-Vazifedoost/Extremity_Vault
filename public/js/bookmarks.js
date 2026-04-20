@@ -110,14 +110,6 @@ function renderBookmarks(bookmarks, categoryId) {
         buttonEl.dataset.id = article.id;
         buttonEl.textContent = 'Remove Bookmark';
 
-        if (article.image_url) {
-            const imgEl = document.createElement('img');
-            imgEl.className = 'article-image';
-            imgEl.src = article.image_url;
-            imgEl.alt = '';
-            imgEl.loading = 'lazy';
-            div.appendChild(imgEl);
-        }
         div.appendChild(titleEl);
         div.appendChild(dateEl);
         div.appendChild(readEl);

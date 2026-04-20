@@ -18,7 +18,7 @@ $user_id = $_SESSION['user_id'];
 
 try {
     $stmt = $pdo->prepare("
-        SELECT a.id, a.title, a.content, a.created_at, a.image_url, a.category_id, c.name AS category
+        SELECT a.id, a.title, a.content, a.created_at, a.category_id, c.name AS category
         FROM bookmarks b
         JOIN articles a ON b.article_id = a.id
         LEFT JOIN categories c ON a.category_id = c.id
