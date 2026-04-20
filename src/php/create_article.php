@@ -24,7 +24,6 @@ $data = json_decode(file_get_contents('php://input'), true);
 $title = filter_var($data['title'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
 $category_id = filter_var($data['category_id'] ?? 0, FILTER_VALIDATE_INT);
 $content = filter_var($data['content'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$image_url = filter_var($data['image_url'] ?? '', FILTER_SANITIZE_URL) ?: null;
 $user_id = $_SESSION['user_id'];
 
 if (!$title || !$category_id || !$content) {
@@ -33,8 +32,8 @@ if (!$title || !$category_id || !$content) {
 }
 
 try {
-    $stmt = $pdo->prepare("INSERT INTO articles (user_id, category_id, title, content, image_url, status) VALUES (?, ?, ?, ?, ?, 'draft')");
-    $stmt->execute([$user_id, $category_id, $title, $content, $image_url]);
+    $stmt = $pdo->prepare("INSERT INTO articles (user_id, category_id, title, content, status) VALUES (?, ?, ?, ?, 'draft')");
+    $stmt->execute([$user_id, $category_id, $title, $content]);
     echo json_encode(['success' => true, 'message' => 'Article created']);
 } catch (PDOException $e) {
     error_log("Article creation failed: " . $e->getMessage());
